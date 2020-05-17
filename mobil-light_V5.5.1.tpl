@@ -80,7 +80,7 @@ li, aside {scroll-snap-align: start}
 <dialog><form><input list='cat' type='search' placeholder='search...' name='qf'><input type='checkbox' checked title='subfolder'><button type="submit">&#x2315;</button></form> <button onclick='this.parentNode.close()'><sup>&times;</sup></button></dialog>
 <datalist id='cat'><option value="*.jpg;*.png;*.gif">image</option><option value="*.mp3;*.ogg;*.m3u">audio</option><option value="*.mp4;*.webm;*.mkv">video</option><option value="*&sort=s&rev=1&">large files</option></datalist>
 <button id='Delete' aria-label="Delete" onclick="del()"></button>
-<button id='Login' aria-label="Login" onclick=" if (this.firstElementChild.textContent) document.execCommand('ClearAuthenticationCache'); location='/~signin'" title="&#x2196;&#x2261; ***"> <span>%user%</span></button>
+<button id='Login' aria-label="Login" onclick=" if (this.firstElementChild.textContent) document.execCommand('ClearAuthenticationCache'); location=parseFloat('%version%')<2.4?'/~login':'/~signin'" title="&#x2196;&#x2261; ***"> <span>%user%</span></button>
 <button id='Archive' aria-label="Archive" title='&#x2611' onclick='del("Archive ")'></button>
 </header>
 <aside><nav onclick="if(!reload) {get(event.target.getAttribute('href'));return false}"></nav><small id='sm' title="sort &#x2611&#xa;&#x2196;&#x2261; &#x263c;"><a href='javascript:void(0)'></a></small></aside>
@@ -252,7 +252,7 @@ formData.append("user",usr)
 if (typeof sha256 != 'undefined') formData.append("passwordSHA256",sha256(sha256(pwd).toLowerCase()+sid).toLowerCase()); else  //
  if (typeof MD5 != 'undefined') formData.append("passwordMD5",MD5(MD5(pwd).toUpperCase()+sid).toUpperCase()); else formData.append("password",pwd)
 xhr.onload=function(){if(xhr.response=='ok') {
- if(document.querySelector("input[type=checkbox]").checked) localStorage.login=document.querySelector("input[name=user]").value+':'+document.querySelector("input[name=password]").value; else localStorage.removeItem('login');
+ if(document.querySelector("input[type=checkbox]").checked) localStorage.login=usr+':'+pwd; else localStorage.removeItem('login');
  location.replace(document.referrer)} else {alert("user or password don't match");document.querySelector("form").reset()}}
 xhr.send(formData)
     return false;
