@@ -3,8 +3,8 @@
 <head>
 <meta charset=UTF-8 />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="5.5.1"/>
-<meta name="Description" content="HFS fileserver">
+<meta name="version" content="5.5.2"/>
+<meta name="Description" content="mobillight">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
 <title>HFS %version%</title>
@@ -25,7 +25,8 @@ nav a[href*="."]::before {content:""}
 a[href$=".mp3"]::before, a[href$=".ogg"]::before {content:"🎧  "}
 a[href$=".jpg"]::before {content:"🌄"}
 img+div a[href$=".jpg"]::before {content:""}
-a[href$=".mp4"]::before {content:"🎞  "} /*1f3ac*/
+a[href$=".mp4"]::before {content:"🎞  "} /*🎬*/
+a[href*="://"]::before, a[href$=".htm"]::before  {content:"🌎  "} /*🔗*/
 
 .checked {background:#f5f5f5}
 .check main div span:last-child::after {content:" \2610"} /*26aa*/
@@ -94,7 +95,7 @@ function urlvar(key) {return (location.search.slice(1).match(key+'=(.*?)(&|$)')|
 function get(val,para){ folder=val; para=para||'';
 var sm=document.querySelector('small')
 
-fetch(folder+'~files.lst?sort='+(urlvar('sort')||'n')+para).then(function(response) { if(response.status==403) {location="/~signin";return}  //
+fetch(folder+'~files.lst?'+(para?para:'sort='+(urlvar('sort')||'n'))).then(function(response) { if(response.status==403) {location="/~signin";return}  //
 if(response.body && typeof(TextEncoder)!='undefined') {
  var reader = response.body.getReader(), txt='';
 
@@ -220,18 +221,18 @@ if(!'%user%' && localStorage.login) location="/~signin"  //
 <h1>Login</h1><a href="/~signin">&#x1f464; Login</a>
 
 [signin]
-<head><meta charset=UTF-8 /><meta name="viewport" content="width=device-width, initial-scale=1"><title>HFS %version%</title></head>
+<!DOCTYPE html><html lang="en"><head><meta charset=UTF-8 /><meta name="viewport" content="width=device-width, initial-scale=1"><title>HFS %version%</title></head>
 
 <br>
 <fieldset id='login'>
-  <legend><img src="/~img27"> {.!Login.}</legend>
-            <form method='post' onsubmit='return login()' action="/?mode=login">  <!-- return true   / -->
-                <table>
-                <tr><td align='right'>{.!Username.}<td><input name='user' size='15' required placeholder="%user%" /><p>
-                <tr ><td align='right'>{.!Password.}<td><input name='password' size='15' type='password' required />
-                <tr ><td><td><input type='submit' value='{.!Login.}' style='margin-top:13px'>
-                </table>
-            </form>
+  <legend>👤 {.!Login.}</legend>
+    <form method='post' onsubmit='return login()' action="/?mode=login">  <!-- return true   / -->
+      <table>
+      <tr><td align='right'><label for="user">{.!Username.}</label><td><input name='user' size='15' required placeholder="%user%" id='user' /><p>
+      <tr ><td align='right'><label for="pw">{.!Password.}</label><td><input name='password' size='15' type='password' required id='pw' /></label>
+      <tr ><td><td><input type='submit' value='{.!Login.}' style='margin-top:13px'>
+      </table>
+    </form>
 Keep me loggedin<input type="checkbox" title='agree to use cookies'>
 </fieldset>
 <button onclick='var tmp=prompt("new password"); if(tmp) location="/~changepwd?new="+tmp;' hidden>🔑 {.!Change password.}</button>
@@ -249,8 +250,7 @@ var xhr = new XMLHttpRequest();
 xhr.open("POST", "/?mode=login");  // /~login
 var formData = new FormData();
 formData.append("user",usr)
-if (typeof sha256 != 'undefined') formData.append("passwordSHA256",sha256(sha256(pwd).toLowerCase()+sid).toLowerCase()); else  //
- if (typeof MD5 != 'undefined') formData.append("passwordMD5",MD5(MD5(pwd).toUpperCase()+sid).toUpperCase()); else formData.append("password",pwd)
+if (typeof sha256 != 'undefined') formData.append("passwordSHA256",sha256(sha256(pwd).toLowerCase()+sid).toLowerCase()); else formData.append("password",pwd) 
 xhr.onload=function(){if(xhr.response=='ok') {
  if(document.querySelector("input[type=checkbox]").checked) localStorage.login=usr+':'+pwd; else localStorage.removeItem('login');
  location.replace(document.referrer)} else {alert("user or password don't match");document.querySelector("form").reset()}}
@@ -271,4 +271,7 @@ var myform=document.querySelector("form"); if (myform.requestSubmit) myform.requ
 
 </script>
 <script src='/~crypto.js'></script>
+
+[template id]
+mobillight 5.5.2
 
