@@ -3,7 +3,7 @@
 <head>
 <meta charset=UTF-8 />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="5.5.2"/>
+<meta name="version" content="5.5.3"/>
 <meta name="Description" content="mobillight">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
@@ -239,6 +239,7 @@ Keep me loggedin<input type="checkbox" title='agree to use cookies'>
 <br>
 
 <script>
+var sha256 = function(s) {return SHA256.hash(s)}
 function logout() {fetch("/?mode=logout").then(res => location.reload()); return false;}
 
 function login() {
@@ -250,9 +251,9 @@ var xhr = new XMLHttpRequest();
 xhr.open("POST", "/?mode=login");  // /~login
 var formData = new FormData();
 formData.append("user",usr)
-if (typeof sha256 != 'undefined') formData.append("passwordSHA256",sha256(sha256(pwd).toLowerCase()+sid).toLowerCase()); else formData.append("password",pwd) 
+if (typeof SHA256 != 'undefined') formData.append("passwordSHA256",sha256(sha256(pwd).toLowerCase()+sid).toLowerCase()); else formData.append("password",pwd) 
 xhr.onload=function(){if(xhr.response=='ok') {
- if(document.querySelector("input[type=checkbox]").checked) localStorage.login=usr+':'+pwd; else localStorage.removeItem('login');
+ if(document.querySelector("input[type=checkbox]").checked) localStorage.login=JSON.stringify([usr,pwd]); else localStorage.removeItem('login');
  location.replace(document.referrer)} else {alert("user or password don't match");document.querySelector("form").reset()}}
 xhr.send(formData)
     return false;
@@ -263,15 +264,15 @@ document.querySelector("input[type=checkbox]").onchange=function(){if(!this.chec
 if('%user%') {document.querySelector("input[type=submit]").value='[➔ {.!Logout.}'; document.querySelector("input[type=submit]").onclick=function(){logout(); return false}; document.querySelector('button').hidden=false}
 
 if(!'%user%' && localStorage.login) {
-var tmp=localStorage.login.split(':')
+var tmp=JSON.parse(localStorage.login)
 document.querySelector("input[name=user]").value=tmp[0]
 document.querySelector("input[name=password]").value=tmp[1]
 var myform=document.querySelector("form"); if (myform.requestSubmit) myform.requestSubmit(); else myForm.submit()
 }
 
 </script>
-<script src='/~crypto.js'></script>
+<script src='/~sha256.js'></script>
 
 [template id]
-mobillight 5.5.2
+mobillight 5.5.3
 
