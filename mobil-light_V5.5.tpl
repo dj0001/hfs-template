@@ -3,7 +3,7 @@
 <head>
 <meta charset=UTF-8 />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="5.5.3"/>
+<meta name="version" content="5.5.4"/>
 <meta name="Description" content="mobillight">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
@@ -37,7 +37,7 @@ a[href$="/"]:active {background:#c2c2c2}
 .dark, .dark li a, .dark li span {background:#555; color:white}
 .dark main {background:#505050}
 @media (prefers-color-scheme: dark) {body, li a, li span, small a {background-color: #555; color: white}}
-@media (min-width:480px) {header button::after {content:" "attr(id)} #Login>span:empty::after {content:" Login"}}
+@media(min-width:480px) {#upload::after{content:" Upload"} #Search::after{content:" Search"} #Delete::after{content:" Delete"} #Archive::after{content:" Archive"} #Login>span:empty::after{content:" Login"} small::after{content:" files"}} /*translate here*/
 #Login::after {content:""}
 nav a:first-child::before {content:"\2302 "} 
 nav a {color:#000}
@@ -225,28 +225,33 @@ if(!'%user%' && localStorage.login) location="/~signin"  //
 
 <br>
 <fieldset id='login'>
-  <legend>👤 {.!Login.}</legend>
+  <legend>👤 </legend>
     <form method='post' onsubmit='return login()' action="/?mode=login">  <!-- return true   / -->
       <table>
-      <tr><td align='right'><label for="user">{.!Username.}</label><td><input name='user' size='15' required placeholder="%user%" id='user' /><p>
-      <tr ><td align='right'><label for="pw">{.!Password.}</label><td><input name='password' size='15' type='password' required id='pw' /></label>
-      <tr ><td><td><input type='submit' value='{.!Login.}' style='margin-top:13px'>
+      <tr><td align='right'><label for="Username"></label><td><input name='user' size='15' required placeholder="%user%" id='Username' /><p>
+      <tr ><td align='right'><label for="Password"></label><td><input name='password' size='15' type='password' required id='Password' /></label>
+      <tr ><td><td><input type='submit'  style='margin-top:13px' id='Login'>
       </table>
     </form>
-Keep me loggedin<input type="checkbox" title='agree to use cookies'>
+ <label for="Keep me loggedin"></label><input type="checkbox" title='agree to use cookies' id='Keep me loggedin'>
 </fieldset>
 <button onclick='var tmp=prompt("new password"); if(tmp) location="/~changepwd?new="+tmp;' hidden>🔑 {.!Change password.}</button>
 <br>
 
 <script>
+var locales={zh:{Login:'登录', Logout:'[➔ 退出登录', Username:'用户名', Password:'密码', 'Keep me loggedin':'Keep me loggedin'}}  //translate here
+function _(i18,l) {l=l||navigator.language.split('-')[0];  return locales[l]?locales[l][i18]:i18}
+Login.value=_('Login')  //
+document.querySelectorAll('label').forEach(el => el.textContent=_(el.htmlFor))
+
 var sha256 = function(s) {return SHA256.hash(s)}
 function logout() {fetch("/?mode=logout").then(res => location.reload()); return false;}
 
 function login() {
     var sid = "{.cookie|HFS_SID_.}"  //getCookie('HFS_SID');
     if (!sid) return true;  //let the form act normally
-    var usr = document.querySelector("input[name=user]").value;
-    var pwd = document.querySelector("input[name=password]").value;
+    var usr = Username.value;
+    var pwd = Password.value;
 var xhr = new XMLHttpRequest();
 xhr.open("POST", "/?mode=login");  // /~login
 var formData = new FormData();
@@ -261,12 +266,12 @@ xhr.send(formData)
 
 if(localStorage.login) document.querySelector("input[type=checkbox]").checked=true  //stop keep loggedin: call /~login (or /~signin) and disable "Keep me loggedin"
 document.querySelector("input[type=checkbox]").onchange=function(){if(!this.checked) localStorage.removeItem('login')}
-if('%user%') {document.querySelector("input[type=submit]").value='[➔ {.!Logout.}'; document.querySelector("input[type=submit]").onclick=function(){logout(); return false}; document.querySelector('button').hidden=false}
+if('%user%') {document.querySelector("input[type=submit]").value=_('Logout'); document.querySelector("input[type=submit]").onclick=function(){logout(); return false}; document.querySelector('button').hidden=false}
 
 if(!'%user%' && localStorage.login) {
 var tmp=JSON.parse(localStorage.login)
-document.querySelector("input[name=user]").value=tmp[0]
-document.querySelector("input[name=password]").value=tmp[1]
+Username.value=tmp[0]
+Password.value=tmp[1]
 var myform=document.querySelector("form"); if (myform.requestSubmit) myform.requestSubmit(); else myForm.submit()
 }
 
@@ -274,5 +279,5 @@ var myform=document.querySelector("form"); if (myform.requestSubmit) myform.requ
 <script src='/~sha256.js'></script>
 
 [template id]
-mobillight 5.5.3
+mobillight 5.5.4
 
