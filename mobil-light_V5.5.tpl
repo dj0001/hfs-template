@@ -88,7 +88,8 @@ li, aside {scroll-snap-align: start}
 <main id='files'><ul></ul></main>
 
 <script>
-const filemask='index.htm'; var thumbsize=64, tn=/\.jpg|\.png|\.gif/, reload=false, target='l'  //edit here |\/
+const filemask='index.htm'; var thumbsize=64, tn=/\.jpg|\.png|\.gif/, reload=false, target='l', ondemand=false  //edit here |\/
+if(ondemand) {thsize0=thumbsize; thumbsize=0}
 var folder=location.pathname.match(/.*\//)[0], b, evt=new Event('render')
 
 function urlvar(key) {return (location.search.slice(1).match(key+'=(.*?)(&|$)')||'')[1]}
@@ -154,6 +155,7 @@ if(f.tagName=='SPAN'&&!f.nextSibling || f.tagName=='A'&&e.altKey) {f.parentNode.
 else if(f.tagName=='IMG') {document.body.classList.toggle("gri");f.scrollIntoView()}
 else if(f.tagName=='A' && ['.mp3','.ogg','.m3u'].indexOf(f.getAttribute('href').slice(-4))+1) {e.preventDefault();
  if(f.getAttribute('href')==audio.getAttribute("src")) if(audio.paused) audio.play(); else audio.pause(); else {audio.src=f.getAttribute('href');audio.play()}}
+else if(ondemand&&f.tagName=='A'&&f.href.endsWith('.jpg')) {thumbsize=thsize0;render(b)}  //
 }
 
 sm.oncontextmenu= function(e) {e.preventDefault(); document.body.classList.toggle("dark")}  //longtouch clock
@@ -225,33 +227,29 @@ if(!'%user%' && localStorage.login) location="/~signin"  //
 
 <br>
 <fieldset id='login'>
-  <legend>👤 </legend>
+  <legend>👤 {.!Login.}</legend>
     <form method='post' onsubmit='return login()' action="/?mode=login">  <!-- return true   / -->
       <table>
-      <tr><td align='right'><label for="Username"></label><td><input name='user' size='15' required placeholder="%user%" id='Username' /><p>
-      <tr ><td align='right'><label for="Password"></label><td><input name='password' size='15' type='password' required id='Password' /></label>
-      <tr ><td><td><input type='submit'  style='margin-top:13px' id='Login'>
+      <tr><td align='right'><label for="user">{.!Username.}</label><td><input name='user' size='15' required placeholder="%user%" id='user' /><p>
+      <tr ><td align='right'><label for="pw">{.!Password.}</label><td><input name='password' size='15' type='password' required id='pw' /></label>
+      <tr ><td><td><input type='submit' value='{.!Login.}' style='margin-top:13px'>
       </table>
     </form>
- <label for="Keep me loggedin"></label><input type="checkbox" title='agree to use cookies' id='Keep me loggedin'>
+Keep me loggedin<input type="checkbox" title='agree to use cookies'>
 </fieldset>
 <button onclick='var tmp=prompt("new password"); if(tmp) location="/~changepwd?new="+tmp;' hidden>🔑 {.!Change password.}</button>
 <br>
 
 <script>
-var locales={zh:{Login:'登录', Logout:'[➔ 退出登录', Username:'用户名', Password:'密码', 'Keep me loggedin':'Keep me loggedin'}}  //translate here
-function _(i18,l) {l=l||navigator.language.split('-')[0];  return locales[l]?locales[l][i18]:i18}
-Login.value=_('Login')  //
-document.querySelectorAll('label').forEach(el => el.textContent=_(el.htmlFor))
-
+const loc={}; loc.Logout='[➔ {.!Logout.}'  /*translate here*/
 var sha256 = function(s) {return SHA256.hash(s)}
 function logout() {fetch("/?mode=logout").then(res => location.reload()); return false;}
 
 function login() {
     var sid = "{.cookie|HFS_SID_.}"  //getCookie('HFS_SID');
     if (!sid) return true;  //let the form act normally
-    var usr = Username.value;
-    var pwd = Password.value;
+    var usr = user.value;
+    var pwd = pw.value;
 var xhr = new XMLHttpRequest();
 xhr.open("POST", "/?mode=login");  // /~login
 var formData = new FormData();
@@ -266,12 +264,12 @@ xhr.send(formData)
 
 if(localStorage.login) document.querySelector("input[type=checkbox]").checked=true  //stop keep loggedin: call /~login (or /~signin) and disable "Keep me loggedin"
 document.querySelector("input[type=checkbox]").onchange=function(){if(!this.checked) localStorage.removeItem('login')}
-if('%user%') {document.querySelector("input[type=submit]").value=_('Logout'); document.querySelector("input[type=submit]").onclick=function(){logout(); return false}; document.querySelector('button').hidden=false}
+if('%user%') {document.querySelector("input[type=submit]").value=loc.Logout; document.querySelector("input[type=submit]").onclick=function(){logout(); return false}; document.querySelector('button').hidden=false}
 
 if(!'%user%' && localStorage.login) {
 var tmp=JSON.parse(localStorage.login)
-Username.value=tmp[0]
-Password.value=tmp[1]
+user.value=tmp[0]
+pw.value=tmp[1]
 var myform=document.querySelector("form"); if (myform.requestSubmit) myform.requestSubmit(); else myForm.submit()
 }
 
