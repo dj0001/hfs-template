@@ -27,11 +27,12 @@ a[href$=".jpg"]::before {content:"🌄"}
 img+div a[href$=".jpg"]::before {content:""}
 a[href$=".mp4"]::before {content:"🎞  "} /*🎬*/
 a[href*="://"]::before, a[href$=".htm"]::before  {content:"🌎  "} /*🔗*/
+a[href$=".comment"]::before {content:"💬  "}
 
 .checked {background:#f5f5f5}
 .check main div span:last-child::after {content:" \2610"} /*26aa*/
 .check .checked span:last-child::after {content:" \2611"} /*26ab*/
-nav {font-weight: bold; background:#cde}
+nav {font-weight: bold}
 small::after {content:" files"}
 a[href$="/"]:active {background:#c2c2c2}
 .dark, .dark li a, .dark li span {background:#555; color:white}
@@ -40,7 +41,7 @@ a[href$="/"]:active {background:#c2c2c2}
 @media(min-width:480px) {#upload::after{content:" Upload"} #Search::after{content:" Search"} #Delete::after{content:" Delete"} #Archive::after{content:" Archive"} #Login>span:empty::after{content:" Login"} small::after{content:" files"}} /*translate here*/
 #Login::after {content:""}
 nav a:first-child::before {content:"\2302 "} 
-nav a {color:#000}
+nav a {color:#000; background:#cde; border-radius: .2em}
 li a {-ms-hyphens:auto; -webkit-hyphens:auto; hyphens:auto}
 nav a::after {content:"/"} /*" > "*/
 /*button:disabled {display:none}*/
@@ -89,6 +90,7 @@ li, aside {scroll-snap-align: start}
 
 <script>
 const filemask='index.htm'; var thumbsize=64, tn=/\.jpg|\.png|\.gif/, reload=false, target='l', ondemand=false  //edit here |\/
+if(parseFloat('%version%')<2.4) console.log('manual change [unauth] to [unauthorized]')  //!
 if(ondemand) {thsize0=thumbsize; thumbsize=0}
 var folder=location.pathname.match(/.*\//)[0], b, evt=new Event('render')
 
@@ -199,7 +201,7 @@ if(!'%user%' && localStorage.login) location="/~signin"  //
 [not found]
 <h1>Not found</h1><a href="/">&#x2302; Home</a>
 
-[unauthorized]
+[unauth]
 <h1>Unauthorized</h1>
 &#x26d4; wrong username or password
 
