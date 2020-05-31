@@ -1,4 +1,4 @@
-[+]
+[+|template=mobillight 5.5*,default 2.4*]
 <script>
 function videoth(){
 let b=document.querySelectorAll('a[href$=".mp4"]')
@@ -13,4 +13,6 @@ b.forEach(item => {
 })
 }; if(!document.querySelector('main')) videoth()  //hfs2.4
 else document.addEventListener('render', videoth)  //mobil-light_V5.4
+
+document.querySelector('#files').addEventListener("click", function(e){if(e.target.tagName=='VIDEO') e.target.requestPictureInPicture()})  //click icon
 </script>
