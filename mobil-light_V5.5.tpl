@@ -3,7 +3,7 @@
 <head>
 <meta charset=UTF-8 />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="5.5.4"/>
+<meta name="version" content="5.5.5"/>
 <meta name="Description" content="mobillight">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
@@ -39,6 +39,9 @@ a[href$="/"]:active {background:#c2c2c2}
 .dark main {background:#505050}
 @media (prefers-color-scheme: dark) {body, li a, li span, small a {background-color: #555; color: white}}
 @media(min-width:480px) {#upload::after{content:" Upload"} #Search::after{content:" Search"} #Delete::after{content:" Delete"} #Archive::after{content:" Archive"} #Login>span:empty::after{content:" Login"} small::after{content:" files"}} /*translate here*/
+#LOGIN::after{content:"Login"} #Logout::after{content:"Logout"} #cpw::after{content:"Change password"}  #cpw::before{content:"🔑 "} #Logout::before{content:"[➔ "}
+#LOGIN,.outbox~#Logout,#pw,.outbox~#cpw {display:block;margin-top:13px} .outbox~#LOGIN,#Logout,.outbox~#pw,#cpw {display:none}
+.outbox~#cb:not(:checked) {pointer-events:none}
 #Login::after {content:""}
 nav a:first-child::before {content:"\2302 "} 
 nav a {color:#000; background:#cde; border-radius: .2em}
@@ -73,6 +76,7 @@ li, aside {scroll-snap-align: start}
 #Login::before {content:"👤"}
 #Archive::before {content:"⇩"}
 </style>
+<script src='/~sha256.js' defer></script>
 </head>
 
 <body>
@@ -82,7 +86,10 @@ li, aside {scroll-snap-align: start}
 <dialog><form><input list='cat' type='search' placeholder='search...' name='qf'><input type='checkbox' checked title='subfolder'><button type="submit">&#x2315;</button></form> <button onclick='this.parentNode.close()'><sup>&times;</sup></button></dialog>
 <datalist id='cat'><option value="*.jpg;*.png;*.gif">image</option><option value="*.mp3;*.ogg;*.m3u">audio</option><option value="*.mp4;*.webm;*.mkv">video</option><option value="*&sort=s&rev=1&">large files</option></datalist>
 <button id='Delete' aria-label="Delete" onclick="del()"></button>
-<button id='Login' aria-label="Login" onclick=" if (this.firstElementChild.textContent) document.execCommand('ClearAuthenticationCache'); location=parseFloat('%version%')<2.4?'/~login':'/~signin'" title="&#x2196;&#x2261; ***"> <span>%user%</span></button>
+<button id='Login' aria-label="Login" onclick="if(parseFloat('%version%')<2.4) location='/~login'; else dia2.showModal()" title="&#x2196;&#x2261; ***"> <span>%user%</span></button>
+<dialog id='dia2'><form><input name='user' required placeholder="Username" id='user' /><input name='password' type='password' required placeholder="Password" id='pw' /><button type="submit" id='LOGIN' aria-label="Login"><button id='Logout' onclick='logout()' hidden></button>
+ Keep me loggedin<input type="checkbox" title='agree to use cookies' id='cb'><button   id='cpw'></button></form>
+ <button onclick='this.parentNode.close()'><sup>&times;</sup></button></dialog>
 <button id='Archive' aria-label="Archive" title='&#x2611' onclick='del("Archive ")'></button>
 </header>
 <aside><nav onclick="if(!reload) {get(event.target.getAttribute('href'));return false}"></nav><small id='sm' title="sort &#x2611&#xa;&#x2196;&#x2261; &#x263c;"><a href='javascript:void(0)'></a></small></aside>
@@ -90,7 +97,7 @@ li, aside {scroll-snap-align: start}
 
 <script>
 const filemask='index.htm'; var thumbsize=64, tn=/\.jpg|\.png|\.gif/, reload=false, target='l', ondemand=false  //edit here |\/
-if(parseFloat('%version%')<2.4) console.log('manual change [unauth] to [unauthorized]')  //!
+if(parseFloat('%version%')<2.4) console.log('manual change [unauth] to [unauthorized] or add [unauthorized] to Diff template')  //!
 if(ondemand) {thsize0=thumbsize; thumbsize=0}
 var folder=location.pathname.match(/.*\//)[0], b, evt=new Event('render')
 
@@ -98,7 +105,7 @@ function urlvar(key) {return (location.search.slice(1).match(key+'=(.*?)(&|$)')|
 function get(val,para){ folder=val; para=para||'';
 var sm=document.querySelector('small')
 
-fetch(folder+'~files.lst?'+(para?para:'sort='+(urlvar('sort')||'n'))).then(function(response) { if(response.status==403) {location="/~signin";return}  //
+fetch(folder+'~files.lst?'+(para?para:'sort='+(urlvar('sort')||'n'))).then(function(response) { if(response.status==403) {dia2.showModal();return}  //
 if(response.body && typeof(TextEncoder)!='undefined') {
  var reader = response.body.getReader(), txt='';
 
@@ -149,7 +156,7 @@ return pr
 
 document.querySelector('form').onsubmit = function(){get(folder,1*this[0].nextElementSibling.checked? "&search="+this[0].value:"&filter=*"+this[0].value+"*"); this.parentNode.close();return false}
 
-var dia=document.querySelector('dialog'); if(!dia.showModal) poly(dia)
+var dia=document.querySelector('dialog'); if(!dia.showModal) poly(dia); if(!dia2.showModal) poly(dia2)
 function poly(node) {node.showModal=function(){this.hidden=false};  node.close=function(){this.hidden=true};  node.setAttribute('open',''); node.hidden=true}  //mypoly
 
 document.querySelector('main').onclick=function(e){var f=e.target; if(!reload&& f.tagName=='A' && !f.target &&!e.altKey) {get(folder+f.getAttribute('href'));return false} else
@@ -167,7 +174,7 @@ upload.oncontextmenu= function() {var ref=document.querySelector('.checked')
  if(ref) {ref=ref.firstChild.text; var tmp=prompt("\u270E rename to",ref);if(tmp) fetch("/~rename?from="+folder+ref+"&to="+tmp).then(res => get(folder))} else  //
  {var tmp=prompt("new folder");if(tmp) fetch("/~mkdir?name="+folder+tmp).then(res => get(folder))}
  return false}
-Login.oncontextmenu= function() {var tmp=prompt("new password"); if(tmp) location="/~changepwd?new="+tmp;return false}
+cpw.onclick=Login.oncontextmenu= function() {var tmp=prompt("new password"); if(tmp) location="/~changepwd?new="+tmp;return false}
 </script>
 <script>
 function sendFiles(filesArray) { const limit=4295  //edit MB
@@ -192,7 +199,30 @@ var audio=new Audio()
 audio.onended = function() {let B=[...document.querySelectorAll('.checked a:not([href$="/"])')], tmp=B.findIndex(o => o.href==audio.src); audio.src=B[(tmp+1)%B.length].href;audio.play()}
 if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', audio.onended)
 
-if(!'%user%' && localStorage.login) location="/~signin"  //
+document.querySelector('#dia2 form').onsubmit = function(){login(); this.parentNode.close(); return false}
+var sha256 = function(s) {return SHA256.hash(s)}
+
+function login() {
+  var sid = "{.cookie|HFS_SID_.}"  //getCookie('HFS_SID');
+  if (!sid) return true;  //let the form act normally
+  var usr = user.value;
+  var pwd = pw.value;
+var xhr = new XMLHttpRequest();
+xhr.open("POST", "/?mode=login");  // /~login
+var formData = new FormData();
+formData.append("user",usr)
+if (typeof SHA256 != 'undefined') formData.append("passwordSHA256",sha256(sha256(pwd).toLowerCase()+sid).toLowerCase()); else formData.append("password",pwd) 
+xhr.onload=function(){if(xhr.response=='ok') {
+ if(document.querySelector("#dia2 input[type=checkbox]").checked) localStorage.login=JSON.stringify([usr,pwd]); else localStorage.removeItem('login');  //
+location.replace(document.referrer)} else {alert("user or password don't match");document.querySelector("#dia2 form").reset()}}
+xhr.send(formData)
+    return false;
+}
+function logout() {fetch("/?mode=logout").then(res => location.reload()); return false}
+if('%user%') {user.placeholder="%user%"; user.classList.add("outbox")}
+document.querySelector("#dia2 input[type=checkbox]").onchange=function(){if(!this.checked) localStorage.removeItem('login')}
+if(localStorage.login) document.querySelector("#dia2 input[type=checkbox]").checked=true
+if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); user.value=tmp[0]; pw.value=tmp[1]; var myform=document.querySelector("#dia2 form"); if (myform.requestSubmit) myform.requestSubmit(); else myForm.submit()}
 </script>
 </body>
 </html>
@@ -224,60 +254,6 @@ if(!'%user%' && localStorage.login) location="/~signin"  //
 [login]
 <h1>Login</h1><a href="/~signin">&#x1f464; Login</a>
 
-[signin]
-<!DOCTYPE html><html lang="en"><head><meta charset=UTF-8 /><meta name="viewport" content="width=device-width, initial-scale=1"><title>HFS %version%</title></head>
-
-<br>
-<fieldset id='login'>
-  <legend>👤 {.!Login.}</legend>
-    <form method='post' onsubmit='return login()' action="/?mode=login">  <!-- return true   / -->
-      <table>
-      <tr><td align='right'><label for="user">{.!Username.}</label><td><input name='user' size='15' required placeholder="%user%" id='user' /><p>
-      <tr ><td align='right'><label for="pw">{.!Password.}</label><td><input name='password' size='15' type='password' required id='pw' /></label>
-      <tr ><td><td><input type='submit' value='{.!Login.}' style='margin-top:13px'>
-      </table>
-    </form>
-Keep me loggedin<input type="checkbox" title='agree to use cookies'>
-</fieldset>
-<button onclick='var tmp=prompt("new password"); if(tmp) location="/~changepwd?new="+tmp;' hidden>🔑 {.!Change password.}</button>
-<br>
-
-<script>
-const loc={}; loc.Logout='[➔ {.!Logout.}'  /*translate here*/
-var sha256 = function(s) {return SHA256.hash(s)}
-function logout() {fetch("/?mode=logout").then(res => location.reload()); return false;}
-
-function login() {
-    var sid = "{.cookie|HFS_SID_.}"  //getCookie('HFS_SID');
-    if (!sid) return true;  //let the form act normally
-    var usr = user.value;
-    var pwd = pw.value;
-var xhr = new XMLHttpRequest();
-xhr.open("POST", "/?mode=login");  // /~login
-var formData = new FormData();
-formData.append("user",usr)
-if (typeof SHA256 != 'undefined') formData.append("passwordSHA256",sha256(sha256(pwd).toLowerCase()+sid).toLowerCase()); else formData.append("password",pwd) 
-xhr.onload=function(){if(xhr.response=='ok') {
- if(document.querySelector("input[type=checkbox]").checked) localStorage.login=JSON.stringify([usr,pwd]); else localStorage.removeItem('login');
- location.replace(document.referrer)} else {alert("user or password don't match");document.querySelector("form").reset()}}
-xhr.send(formData)
-    return false;
-}
-
-if(localStorage.login) document.querySelector("input[type=checkbox]").checked=true  //stop keep loggedin: call /~login (or /~signin) and disable "Keep me loggedin"
-document.querySelector("input[type=checkbox]").onchange=function(){if(!this.checked) localStorage.removeItem('login')}
-if('%user%') {document.querySelector("input[type=submit]").value=loc.Logout; document.querySelector("input[type=submit]").onclick=function(){logout(); return false}; document.querySelector('button').hidden=false}
-
-if(!'%user%' && localStorage.login) {
-var tmp=JSON.parse(localStorage.login)
-user.value=tmp[0]
-pw.value=tmp[1]
-var myform=document.querySelector("form"); if (myform.requestSubmit) myform.requestSubmit(); else myForm.submit()
-}
-
-</script>
-<script src='/~sha256.js'></script>
-
 [template id]
-mobillight 5.5.4
+mobillight 5.5.5
 
