@@ -3,7 +3,7 @@
 <head>
 <meta charset=UTF-8 />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="5.5.5"/>
+<meta name="version" content="5.5.6"/>
 <meta name="Description" content="mobillight">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
@@ -33,15 +33,14 @@ a[href$=".comment"]::before {content:"💬  "}
 .check main div span:last-child::after {content:" \2610"} /*26aa*/
 .check .checked span:last-child::after {content:" \2611"} /*26ab*/
 nav {font-weight: bold}
-small::after {content:" files"}
 a[href$="/"]:active {background:#c2c2c2}
 .dark, .dark li a, .dark li span {background:#555; color:white}
 .dark main {background:#505050}
 @media (prefers-color-scheme: dark) {body, li a, li span, small a {background-color: #555; color: white}}
-@media(min-width:480px) {#upload::after{content:" Upload"} #Search::after{content:" Search"} #Delete::after{content:" Delete"} #Archive::after{content:" Archive"} #Login>span:empty::after{content:" Login"} small::after{content:" files"}}
+@media(min-width:480px) {#upload::after{content:" Upload"} #Search::after{content:" Search"} #Delete::after{content:" Delete"} #Archive::after{content:" Archive"} #Login>span:empty::after{content:" Login"}} small::after{content:" files"}
 #LOGIN::after{content:"Login"} #Logout::after{content:"Logout"} #cpw::after{content:"Change password"} /*to translate uncomment next lines*/
-/*@media(min-width:480px) {#upload::after{content:" {.!Upload.}"} #Search::after{content:" {.!Search.}"} #Delete::after{content:" {.!Delete.}"} #Archive::after{content:" {.!Archive.}"} #Login>span:empty::after{content:" {.!Login.}"} small::after{content:" {.!files.}"}}*/
-/*#LOGIN::after{content:"{.!Login.}"} #Logout::after{content:"{.!Logout.}"} #cpw::after{content:"{.!Change password.}"}*/
+/*@media(min-width:480px) {#upload::after{content:" {.!Upload.}"} #Search::after{content:" {.!Search.}"} #Delete::after{content:" {.!Delete.}"} #Archive::after{content:" {.!Archive.}"} #Login>span:empty::after{content:" {.!Login.}"}} small::after{content:" {.!files.}"}
+ #LOGIN::after{content:"{.!Login.}"} #Logout::after{content:"{.!Logout.}"} #cpw::after{content:"{.!Change password.}"}*/
  #cpw::before{content:"🔑 "} #Logout::before{content:"[➔ "}
 #LOGIN,.outbox~#Logout,#pw,.outbox~#cpw {display:block;margin-top:13px} .outbox~#LOGIN,#Logout,.outbox~#pw,#cpw {display:none}
 .outbox~#cb:not(:checked) {pointer-events:none}
@@ -189,7 +188,7 @@ fetch(folder,{method:'POST',body:fd}).then(response => {get(folder); upload.clas
 
 function del(ar) {
 var ref = document.querySelectorAll('.checked'), qstr=''
-ref.forEach(item => qstr+='&selection='+item.firstChild.getAttribute('href'))
+ref.forEach(item => qstr+='&'+(parseFloat('%version%')<2.4?'selection':'files')+'='+item.firstChild.getAttribute('href'))
 if(!qstr) {document.querySelector('body').classList.toggle("check"); return}
 if(!confirm((ar||"Delete ")+ref.length+" file(s) ?")) return
 ct={"Content-type":"application/x-www-form-urlencoded"}; 
@@ -258,5 +257,5 @@ if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); use
 <h1>Login</h1><a href="/~signin">&#x1f464; Login</a>
 
 [template id]
-mobillight 5.5.5
+mobillight 5.5.6
 
