@@ -37,10 +37,10 @@ a[href$="/"]:active {background:#c2c2c2}
 .dark, .dark li a, .dark li span {background:#555; color:white}
 .dark main {background:#505050}
 @media (prefers-color-scheme: dark) {body, li a, li span, small a {background-color: #555; color: white}}
-@media(min-width:480px) {#upload::after{content:" Upload"} #Search::after{content:" Search"} #Delete::after{content:" Delete"} #Archive::after{content:" Archive"} #Login>span:empty::after{content:" Login"}} small::after{content:" files"}
-#LOGIN::after{content:"Login"} #Logout::after{content:"Logout"} #cpw::after{content:"Change password"} /*to translate uncomment next lines*/
-/*@media(min-width:480px) {#upload::after{content:" {.!Upload.}"} #Search::after{content:" {.!Search.}"} #Delete::after{content:" {.!Delete.}"} #Archive::after{content:" {.!Archive.}"} #Login>span:empty::after{content:" {.!Login.}"}} small::after{content:" {.!files.}"}
- #LOGIN::after{content:"{.!Login.}"} #Logout::after{content:"{.!Logout.}"} #cpw::after{content:"{.!Change password.}"}*/
+@media(min-width:480px) {#upload::after{content:" {.!Upload.}"} #Search::after{content:" {.!Search.}"} #Delete::after{content:" {.!Delete.}"} #Archive::after{content:" {.!Archive.}"} #Login>span:empty::after{content:" {.!Login.}"}} small::after{content:" {.!files.}"}
+ #LOGIN::after{content:"{.!Login.}"} #Logout::after{content:"{.!Logout.}"} #cpw::after{content:"{.!Change password.}"}
+/*{.comment|*/@media(min-width:480px) {#upload::after{content:" Upload"} #Search::after{content:" Search"} #Delete::after{content:" Delete"} #Archive::after{content:" Archive"} #Login>span:empty::after{content:" Login"}} small::after{content:" files"}
+#LOGIN::after{content:"Login"} #Logout::after{content:"Logout"} #cpw::after{content:"Change password"}/*.}*/
  #cpw::before{content:"🔑 "} #Logout::before{content:"[➔ "}
 #LOGIN,.outbox~#Logout,#pw,.outbox~#cpw {display:block;margin-top:13px} .outbox~#LOGIN,#Logout,.outbox~#pw,#cpw {display:none}
 .outbox~#cb:not(:checked) {pointer-events:none}
