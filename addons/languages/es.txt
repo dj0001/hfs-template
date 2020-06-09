@@ -1,0 +1,10 @@
+Upload=Subir
+Search=Buscar
+Delete=Eliminar
+Archive=Archivo
+files=archivos
+Login=Registro
+Logout=Desconectar
+Change password=Cambia la contraseña
+Stay loggedin=Permanecer conectado
+New folder=Nueva carpeta

@@ -1,0 +1,10 @@
+Upload=上传
+Search=搜索
+Delete=删除
+Archive=打包
+files=文件
+Login=登录
+Logout=退出登录
+Change password=更改密码
+Stay loggedin=保持登录
+New folder=新建文件夹
