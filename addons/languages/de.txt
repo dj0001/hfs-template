@@ -1,0 +1,10 @@
+Upload=Hochladen
+Search=Suchen
+Delete=Löschen
+Archive=Archivieren
+files=Dateien
+Login=Anmelden
+Logout=Abmelden
+Change password=Wechsle Passwort
+Stay loggedin=Bleibe eingeloggt
+New folder=Neues Verzeichnis
