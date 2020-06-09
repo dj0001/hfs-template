@@ -4,17 +4,18 @@
   <option value="de">de</option>
 </select>
 
-<a >Download</a>
+<a hidden></a>
+<button>Download</button>
 
 <script>
-var sel=document.querySelector('select')
-sel.value=navigator.language.split('-')[0]; get()
-sel.oninput=get
+var sel=document.querySelector('select'), a=document.querySelector('a')
+sel.value=navigator.language.split('-')[0]; //get()
+document.querySelector('button').onclick=get
 
 function get(){
  var lng=sel.value
- document.querySelector('a').download='language_'+lng+'.diff.tpl'
+ a.download='language_'+lng+'.diff.tpl'
  fetch('https://dj0001.github.io/hfs-template/addons/languages/'+lng+'.txt').then(res => res.text())
-  .then(txt => {txt=new Blob(['[+special:strings]\n'+txt],{type:'text/plain'}); document.querySelector('a').href=URL.createObjectURL(txt)} )
+  .then(txt => {txt=new Blob(['[+special:strings]\n'+txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()} )
 }
 </script>
