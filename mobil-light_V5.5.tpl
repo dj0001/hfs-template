@@ -3,7 +3,7 @@
 <head>
 <meta charset=UTF-8 />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="5.5.6"/>
+<meta name="version" content="5.5.7"/>
 <meta name="Description" content="mobillight">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
@@ -19,6 +19,7 @@ li>div, aside, header {display: flex; flex-wrap: wrap; justify-content: space-be
 li {display:flex; border-top: 1px solid #ddd}
 li>div,img {padding: .3em 0}
 li span {color:#757575}
+button::after, #Login>span::after {background:#cde}
 
 a[href*="."]::before {content:"📄  "}
 nav a[href*="."]::before {content:""}
@@ -36,11 +37,10 @@ nav {font-weight: bold}
 a[href$="/"]:active {background:#c2c2c2}
 .dark, .dark li a, .dark li span {background:#555; color:white}
 .dark main {background:#505050}
-@media (prefers-color-scheme: dark) {body, li a, li span, small a {background-color: #555; color: white}}
 @media(min-width:480px) {#upload::after{content:" {.!Upload.}"} #Search::after{content:" {.!Search.}"} #Delete::after{content:" {.!Delete.}"} #Archive::after{content:" {.!Archive.}"} #Login>span:empty::after{content:" {.!Login.}"}} small::after{content:" {.!files.}"}
- #LOGIN::after{content:"{.!Login.}"} #Logout::after{content:"{.!Logout.}"} #cpw::after{content:"{.!Change password.}"}
+ #LOGIN::after{content:"{.!Login.}"} #Logout::after{content:"{.!Logout.}"} #cpw::after{content:"{.!Change password.}"} #dia2 span::after{content:"{.!Stay loggedin.}"}
 /*{.comment|*/@media(min-width:480px) {#upload::after{content:" Upload"} #Search::after{content:" Search"} #Delete::after{content:" Delete"} #Archive::after{content:" Archive"} #Login>span:empty::after{content:" Login"}} small::after{content:" files"}
-#LOGIN::after{content:"Login"} #Logout::after{content:"Logout"} #cpw::after{content:"Change password"}/*.}*/
+#LOGIN::after{content:"Login"} #Logout::after{content:"Logout"} #cpw::after{content:"Change password"} #dia2 span::after{content:"Stay loggedin"}/*.}*/
  #cpw::before{content:"🔑 "} #Logout::before{content:"[➔ "}
 #LOGIN,.outbox~#Logout,#pw,.outbox~#cpw {display:block;margin-top:13px} .outbox~#LOGIN,#Logout,.outbox~#pw,#cpw {display:none}
 .outbox~#cb:not(:checked) {pointer-events:none}
@@ -89,8 +89,8 @@ li, aside {scroll-snap-align: start}
 <datalist id='cat'><option value="*.jpg;*.png;*.gif">image</option><option value="*.mp3;*.ogg;*.m3u">audio</option><option value="*.mp4;*.webm;*.mkv">video</option><option value="*&sort=s&rev=1&">large files</option></datalist>
 <button id='Delete' aria-label="Delete" onclick="del()"></button>
 <button id='Login' aria-label="Login" onclick="if(parseFloat('%version%')<2.4) location='/~login'; else dia2.showModal()" title="&#x2196;&#x2261; ***"> <span>%user%</span></button>
-<dialog id='dia2'><form><input name='user' required placeholder="Username" id='user' /><input name='password' type='password' required placeholder="Password" id='pw' /><button type="submit" id='LOGIN' aria-label="Login"><button id='Logout' onclick='logout()' hidden></button>
- Keep me loggedin<input type="checkbox" title='agree to use cookies' id='cb'><button   id='cpw'></button></form>
+<dialog id='dia2'><form><input name='user' required placeholder="Username" id='user' /><input name='password' type='password' required placeholder="Password" id='pw' minlength=4 /><button type="submit" id='LOGIN' aria-label="Login"><button id='Logout' onclick='logout()' hidden></button>
+ <span></span><input type="checkbox" title='agree to use cookies' id='cb'><button   id='cpw'></button></form>
  <button onclick='this.parentNode.close()'><sup>&times;</sup></button></dialog>
 <button id='Archive' aria-label="Archive" title='&#x2611' onclick='del("Archive ")'></button>
 </header>
@@ -99,7 +99,6 @@ li, aside {scroll-snap-align: start}
 
 <script>
 const filemask='index.htm'; var thumbsize=64, tn=/\.jpg|\.png|\.gif/, reload=false, target='l', ondemand=false  //edit here |\/
-if(parseFloat('%version%')<2.4) console.log('manual change [unauth] to [unauthorized] or add [unauthorized] to Diff template')  //!
 if(ondemand) {thsize0=thumbsize; thumbsize=0}
 var folder=location.pathname.match(/.*\//)[0], b, evt=new Event('render')
 
@@ -107,7 +106,7 @@ function urlvar(key) {return (location.search.slice(1).match(key+'=(.*?)(&|$)')|
 function get(val,para){ folder=val; para=para||'';
 var sm=document.querySelector('small')
 
-fetch(folder+'~files.lst?'+(para?para:'sort='+(urlvar('sort')||'n'))).then(function(response) { if(response.status==403) {dia2.showModal();return}  //
+fetch(folder+'~files.lst?'+(para?para:'sort='+(urlvar('sort')||'n'))).then(function(response) {if(response.status==403) {dia2.showModal();return} else  if(response.status==429) {setTimeout(get, 500,folder);return}  //
 if(response.body && typeof(TextEncoder)!='undefined') {
  var reader = response.body.getReader(), txt='';
 
@@ -176,7 +175,7 @@ upload.oncontextmenu= function() {var ref=document.querySelector('.checked')
  if(ref) {ref=ref.firstChild.text; var tmp=prompt("\u270E rename to",ref);if(tmp) fetch("/~rename?from="+folder+ref+"&to="+tmp).then(res => get(folder))} else  //
  {var tmp=prompt("new folder");if(tmp) fetch("/~mkdir?name="+folder+tmp).then(res => get(folder))}
  return false}
-cpw.onclick=Login.oncontextmenu= function() {var tmp=prompt("new password"); if(tmp) location="/~changepwd?new="+tmp;return false}
+cpw.onclick=Login.oncontextmenu= function() {if(pw.value) {var fd=new FormData();fd.append('new',user.value);fetch('/~changepwd',{method:'POST',body:fd}).then(response => dia2.close())} else {pw.style.display='block';dia2.showModal()}; return false}
 </script>
 <script>
 function sendFiles(filesArray) { const limit=4295  //edit MB
@@ -201,6 +200,7 @@ var audio=new Audio()
 audio.onended = function() {let B=[...document.querySelectorAll('.checked a:not([href$="/"])')], tmp=B.findIndex(o => o.href==audio.src); audio.src=B[(tmp+1)%B.length].href;audio.play()}
 if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', audio.onended)
 
+if(window.matchMedia('(prefers-color-scheme:dark)').matches) document.body.classList.add('dark')  //light remove
 document.querySelector('#dia2 form').onsubmit = function(){login(); this.parentNode.close(); return false}
 var sha256 = function(s) {return SHA256.hash(s)}
 
@@ -247,7 +247,7 @@ if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); use
 {.mkdir|{.force ansi|{.?name.}.}.}
 
 [changepwd]
-{.if|{.member of|can change password.}|{:{.set account||password={.force ansi|{.?new.}.}.}:}.} {.redirect|./.}
+{.if|{.member of|can change password.}|{:{.set account||password={.force ansi|{.postvar|new.}.}.}:}.}
 
 [rename]
 {.rename|{.force ansi|{.?from.}.}|{.force ansi|{.?to.}.}.}
@@ -255,7 +255,4 @@ if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); use
 
 [login]
 <h1>Login</h1><a href="/~signin">&#x1f464; Login</a>
-
-[template id]
-mobillight 5.5.6
 
