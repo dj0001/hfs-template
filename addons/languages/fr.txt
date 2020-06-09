@@ -1,0 +1,10 @@
+Upload=Envoi
+Search=Chercher
+Delete=Supprimer
+Archive=Archiver
+files=Fichier(s)
+Login=Connexion
+Logout=Se déconnecter
+Change password=Changer le mot de passe
+Stay loggedin=Rester connecté
+New folder=Nouveau dossier
