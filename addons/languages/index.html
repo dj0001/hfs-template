@@ -1,0 +1,16 @@
+<select >
+  <option value="--" >--</option>
+  <option value="zh">zh</option>
+  <option value="es">es</option>
+  <option value="de">de</option>
+</select>
+
+<a >Download</a>
+
+<script>
+document.querySelector('select').oninput=function(){ var lng=document.querySelector('select').value
+ document.querySelector('a').download='language_'+lng+'.diff.tpl'
+ fetch('https://dj0001.github.io/hfs-template/addons/languages/'+lng+'.txt').then(res => res.text())
+  .then(txt => {txt=new Blob(['[special:strings]\n'+txt],{type:'text/plain'}); document.querySelector('a').href=URL.createObjectURL(txt)} )
+}
+</script>
