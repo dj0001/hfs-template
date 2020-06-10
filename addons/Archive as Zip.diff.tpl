@@ -14,7 +14,7 @@ if(!it.length || !confirm("Archive "+it.length+" file(s) ?")) return;
 var zip=new JSZip(), c=it.length
 it.forEach(item => {
  fetch((item.firstChild||item.parentNode)['href']).then(function(res)
-  {res.blob().then(function(myBlob){zip.file(res.headers.get('content-disposition').match(/"(.+?)"/)[1], myBlob); c--; if(!c) save()})} );
+  {res.blob().then(function(myBlob){zip.file(decodeURI(res.headers.get('content-disposition').match(/"(.+?)"/)[1]), myBlob); c--; if(!c) save()})} );
 })
 
 function save(){
