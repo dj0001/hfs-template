@@ -10,7 +10,7 @@
 
 <script>
 var sel=document.querySelector('select'), a=document.querySelector('a')
-sel.value=navigator.language.split('-')[0]; //get()
+sel.value = location.search.slice(1) || navigator.language.split('-')[0]; // /?es
 document.querySelector('button').onclick=get
 
 function get(){
