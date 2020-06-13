@@ -3,7 +3,7 @@
 <head>
 <meta charset=UTF-8 />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="5.5.7"/>
+<meta name="version" content="5.5.8"/>
 <meta name="Description" content="mobillight">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
@@ -175,7 +175,8 @@ upload.oncontextmenu= function() {var ref=document.querySelector('.checked')
  if(ref) {ref=ref.firstChild.text; var tmp=prompt("\u270E rename to",ref);if(tmp) fetch("/~rename?from="+folder+ref+"&to="+tmp).then(res => get(folder))} else  //
  {var tmp=prompt("new folder");if(tmp) fetch("/~mkdir?name="+folder+tmp).then(res => get(folder))}
  return false}
-cpw.onclick=Login.oncontextmenu= function() {if(pw.value) {var fd=new FormData();fd.append('new',user.value);fetch('/~changepwd',{method:'POST',body:fd}).then(response => dia2.close())} else {pw.style.display='block';dia2.showModal()}; return false}
+cpw.onclick=Login.oncontextmenu= function() {if(pw.value) {var xhr=new XMLHttpRequest();xhr.open('POST','?mode=section&id=changepwd');xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');xhr.onload=function(){dia2.close()};
+ xhr.send('token={.cookie|HFS_SID_.}&new='+btoa(unescape(encodeURIComponent(pw.value))))} else {pw.style.display='block';dia2.showModal()}; return false}
 </script>
 <script>
 function sendFiles(filesArray) { const limit=4295  //edit MB
@@ -247,7 +248,7 @@ if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); use
 {.mkdir|{.force ansi|{.?name.}.}.}
 
 [changepwd]
-{.if|{.member of|can change password.}|{:{.set account||password={.force ansi|{.postvar|new.}.}.}:}.}
+{.if|{.member of|can change password.}|{:{.set account||password={.base64decode|{.postvar|new.}.}.}ok:}|ko.}
 
 [rename]
 {.rename|{.force ansi|{.?from.}.}|{.force ansi|{.?to.}.}.}
