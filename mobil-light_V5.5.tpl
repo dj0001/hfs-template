@@ -175,7 +175,7 @@ upload.oncontextmenu= function() {var ref=document.querySelector('.checked')
  if(ref) {ref=ref.firstChild.text; var tmp=prompt("\u270E rename to",ref);if(tmp) fetch("/~rename?from="+folder+ref+"&to="+tmp).then(res => get(folder))} else  //
  {var tmp=prompt("new folder");if(tmp) fetch("/~mkdir?name="+folder+tmp).then(res => get(folder))}
  return false}
-cpw.onclick=Login.oncontextmenu= function() {if(pw.value) {var xhr=new XMLHttpRequest();xhr.open('POST','?mode=section&id=changepwd');xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');xhr.onload=function(){dia2.close()};
+cpw.onclick=Login.oncontextmenu= function() {if(pw.value && !pw.value.match(/{\..*\.}/)) {var xhr=new XMLHttpRequest();xhr.open('POST','?mode=section&id=changepwd');xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');xhr.onload=function(){dia2.close()};
  xhr.send('token={.cookie|HFS_SID_.}&new='+btoa(unescape(encodeURIComponent(pw.value))))} else {pw.style.display='block';dia2.showModal()}; return false}
 </script>
 <script>
