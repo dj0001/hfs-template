@@ -3,7 +3,7 @@
 <head>
 <meta charset=UTF-8 />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="5.5.8"/>
+<meta name="version" content="5.5.9"/>
 <meta name="Description" content="mobillight">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
@@ -188,7 +188,7 @@ fetch(folder,{method:'POST',body:fd}).then(response => {get(folder); upload.clas
 
 function del(ar) {
 var ref = document.querySelectorAll('.checked'), qstr=''
-ref.forEach(item => qstr+='&'+(parseFloat('%version%')<2.4?'selection':'files')+'='+item.firstChild.getAttribute('href'))
+ref.forEach(item => qstr+='&selection='+item.firstChild.getAttribute('href'))
 if(!qstr) {document.querySelector('body').classList.toggle("check"); return}
 if(!confirm((ar||"Delete ")+ref.length+" file(s) ?")) return
 ct={"Content-type":"application/x-www-form-urlencoded"}; 
@@ -234,7 +234,7 @@ if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); use
 [not found]
 <h1>Not found</h1><a href="/">&#x2302; Home</a>
 
-[unauth]
+[unauth=unauthorized]
 <h1>Unauthorized</h1>
 &#x26d4; wrong username or password
 
@@ -256,4 +256,7 @@ if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); use
 
 [login]
 <h1>Login</h1><a href="/~signin">&#x1f464; Login</a>
+
+[api level]
+2
 
