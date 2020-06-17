@@ -14,8 +14,7 @@ Default sort <select >
 
 <script>
 var origin='http://127.0.0.1'  //edit here, if you use this file local or add this file to root
-if(origin!='https://dj0001.github.io') origin=location.host?location.origin:origin
-//if(origin=='https://dj0001.github.io') origin='http://80.187.81.52'  //
+if(location.origin!='https://dj0001.github.io') origin=location.host?location.origin:origin
 origin=location.search.slice(1)||origin
 sa.value=origin
 
