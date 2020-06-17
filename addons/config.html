@@ -1,0 +1,27 @@
+Default sort <select >
+  <option value="n">Name</option>
+  <option value="e">Ext</option>
+  <option value="s">Size</option>
+  <option value="t">Date</option>
+</select>
+
+<br>Thumbsize <br><input type="range" value="64" max="256" step="64" title='0-256'  style='width:256px' onchange="this.title=this.value">
+
+<br><label for=cb title='*probably in next version'>open files in new tab* </label><input type="checkbox" checked id='cb'>
+
+<br><br>
+<input type='url' title='server address' id='sa'> <button>Go</button>
+
+<script>
+var origin='http://127.0.0.1'  //edit here, if you use this file local or add this file to root
+if(origin!='https://dj0001.github.io') origin=location.host?location.origin:origin
+//if(origin=='https://dj0001.github.io') origin='http://80.187.81.52'  //
+origin=location.search.slice(1)||origin
+sa.value=origin
+
+document.querySelector('button').onclick=get
+
+function get(){
+location=sa.value+'/?sort='+document.querySelector('select').value+'&thumbsize='+document.querySelector('input').value+'&target='+(cb.checked?'L':'_self')
+}
+</script>
