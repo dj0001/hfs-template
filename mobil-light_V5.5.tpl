@@ -52,7 +52,7 @@ nav a::after {content:"/"} /*" > "*/
 /*button:disabled {display:none}*/
 /*body:not(.check) #Delete {display:none}*/ 
 header {position:-webkit-sticky; position:sticky; top:-20px} /*0px*/
-header::before {content:"\1f30d HTTP File Server"; display:block; width:100%; text-align:center; color:#fff} /**/
+header::before {content:"🌍 HTTP File Server"; display:block; width:100%; text-align:center; color:#fff} /**/
 /*a+span:not(:empty)::after{content:"B"}*/
 form {display:inline-block}
 li a+span {margin:0px 10px 0px auto}
@@ -99,7 +99,7 @@ li, aside {scroll-snap-align: start}
 
 <script>
 const filemask='index.htm'; var thumbsize=64, tn=/\.jpg|\.png|\.gif/, reload=false, target='l', ondemand=false  //edit here |\/
-if(ondemand) {thsize0=thumbsize; thumbsize=0}
+thumbsize=urlvar('thumbsize')||thumbsize; if(ondemand) {thsize0=thumbsize; thumbsize=0}
 var folder=location.pathname.match(/.*\//)[0], b, evt=new Event('render')
 
 function urlvar(key) {return (location.search.slice(1).match(key+'=(.*?)(&|$)')||'')[1]}
@@ -244,13 +244,13 @@ if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); use
 [overload]
 <h1>Service Unavailable</h1>overloaded Retry later   
 
-[mkdir]
+[mkdir|public]
 {.mkdir|{.force ansi|{.?name.}.}.}
 
-[changepwd]
+[changepwd|public]
 {.if|{.member of|can change password.}|{:{.set account||password={.base64decode|{.postvar|new.}.}.}ok:}|ko.}
 
-[rename]
+[rename|public]
 {.rename|{.force ansi|{.?from.}.}|{.force ansi|{.?to.}.}.}
 
 
