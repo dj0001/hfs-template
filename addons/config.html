@@ -5,22 +5,33 @@ Default sort <select >
   <option value="t">Date</option>
 </select>
 
-<br>Thumbsize <br><input type="range" value="64" max="256" step="64" title='0-256'  style='width:256px' onchange="this.title=this.value">
+<br>Thumbsize <br><input type="range" value="64" max="256" step="64" title='64&#xa;0-256'  style='width:256px' onchange="this.title=this.value;sm()">
 
-<br><label for=cb title='*probably in next version'>open files in new tab* </label><input type="checkbox" checked id='cb'>
+<br><label for=i3 title='target'>Open files in new tab </label><input type="checkbox" checked id='i3' onchange='sm()'>
+<br><label for=i4 title="*admin add 'ondemand' to qs">Ondemand thumbs* </label><input type="checkbox" checked id='i4' onchange='sm()'>
+
+<br><span title='*admin add Languages.diff.tpl'>Default language* </span><select id='lng'>
+  <option value="">auto</option>
+  <option value="zh">zh</option>
+  <option value="en">en</option>
+  <option value="es">es</option>
+  <option value="de">de</option>
+</select>
 
 <br><br>
 <input type='url' title='server address' id='sa'> <button>Go</button>
 
+<br><br><small title='admin edit first line in script'></small>
+<br><a href='https://github.com/dj0001/hfs-template/tree/master/addons' target='n' id='n' title='admin only'>addons</a>
 <script>
 var origin='http://127.0.0.1'  //edit here, if you use this file local or add this file to root
-if(location.origin!='https://dj0001.github.io') origin=location.host?location.origin:origin
+if(location.origin!='https://dj0001.github.io') {origin=location.host?location.origin:origin; if(location.host) {n.hidden=true; fetch('/languages/es.txt',{method:'head'}).then(res => {if(res.status==404) lng.disabled=true})}}
 origin=location.search.slice(1)||origin
 sa.value=origin
+lng.value=navigator.language.split('-')[0]  //
 
-document.querySelector('button').onclick=get
+const $ = document.querySelector.bind(document); $('button').onclick=get
 
-function get(){
-location=sa.value+'/?sort='+document.querySelector('select').value+'&thumbsize='+document.querySelector('input').value+'&target='+(cb.checked?'L':'_self')
-}
+function get() {location = sa.value +'/?sort='+$('select').value +'&'+$('small').textContent.replace(/, /g,'&') +'&lang='+lng.value}
+function sm() {$('small').textContent = 'thumbsize='+$('input').value +', target='+(i3.checked?'L':'_self') +', ondemand='+i4.checked}; sm();
 </script>
