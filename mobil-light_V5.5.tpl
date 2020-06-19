@@ -99,7 +99,7 @@ li, aside {scroll-snap-align: start}
 
 <script>
 const filemask='index.htm'; var thumbsize=64, tn=/\.jpg|\.png|\.gif/, reload=false, target='l', ondemand=false  //edit here |\/
-thumbsize=urlvar('thumbsize')||thumbsize; if(ondemand) {thsize0=thumbsize; thumbsize=0}
+const qs=['thumbsize','target'];qs.forEach(q => window[q]=urlvar(q)||window[q]); if(ondemand) {thsize0=thumbsize; thumbsize=0}
 var folder=location.pathname.match(/.*\//)[0], b, evt=new Event('render')
 
 function urlvar(key) {return (location.search.slice(1).match(key+'=(.*?)(&|$)')||'')[1]}
