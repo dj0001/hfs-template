@@ -25,7 +25,7 @@ Default sort <select >
 <br><a href='https://github.com/dj0001/hfs-template/tree/master/addons' target='n' id='n' title='admin only'>addons</a>
 <script>
 var origin='http://127.0.0.1'  //edit here, if you use this file local or add this file to root
-if(location.origin!='https://dj0001.github.io') {origin=location.host?location.origin:origin; if(location.host) {n.hidden=true; fetch('/languages/es.txt',{method:'head'}).then(res => {if(res.status==404) lng.disabled=true})}}
+if(location.origin!='https://dj0001.github.io') {origin=location.host?location.origin:origin; if(location.host) {n.hidden=true; }}  //fetch('/languages/es.txt',{method:'head'}).then(res => {if(res.status==404) lng.disabled=true})
 origin=location.search.slice(1)||origin
 sa.value=origin
 lng.value=navigator.language.split('-')[0]  //
