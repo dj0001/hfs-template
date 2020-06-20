@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+a {margin-right: 5px}
+img {width:64px;height:64px;object-fit:cover}
+</style>
+</head>
+<body>
+ID3 Reader
+<br><input type='file' multiple accept="audio/*,video/*">
+<br><a download='descript.ion' id='toion'>descript.ion</a><br>
+
+<!-- [+] -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/musicmetadata/2.0.2/musicmetadata.min.js"></script>
+<!-- <script src="musicmetadata.min.js"></script>  -->
+<script>
+var des=''  //?nopics
+
+document.querySelector('input[type=file]').addEventListener("change", function(){sendFilez(this.files)})
+
+function sendFilez(filesArray) {
+Array.from(filesArray).forEach((item) =>{GetCom(item)})
+}
+
+function GetCom(file) {
+  musicmetadata(file,  (err, result) => {
+  var text = result.title+' - '+result.artist  //edit here album
+  des+='"'+file.name+'" '+text+'\r\n';
+  if(document.querySelector('#toion')) document.querySelector('#toion').href="data:,"+encodeURI(des)
+        if (location.search!='?nopics' && result.picture.length > 0) {
+          var picture = result.picture[0];
+          var blob=new Blob([picture.data], {'type': 'image/' + picture.format})
+          if(document.querySelector('#toion')) {
+          var url = URL.createObjectURL(blob);
+          var link=document.createElement('a')
+          link.href = url; link.download = file.name + '.jpg'
+          var image = document.createElement('img')
+          image.src = url; image.title=text
+          link.appendChild(image)
+          document.body.appendChild(link) }       
+ var xhr=new XMLHttpRequest(), fd = new FormData()  //upload in hfs
+ fd.append("image", blob, file.name);  //file.name+'.jpg'
+ xhr.open("POST", "thumb/", true)
+ xhr.send(fd)
+        }
+  });
+}
+</script>
+<!-- script can be added to hfs as diff.tpl -->
+
+</body>
+</html>
