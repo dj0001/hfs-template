@@ -106,7 +106,7 @@ function urlvar(key) {return (location.search.slice(1).match(key+'=(.*?)(&|$)')|
 function get(val,para){ folder=val; para=para||'';
 var sm=document.querySelector('small')
 
-fetch(folder+'files.txt?'+(para?para:'sort='+(urlvar('sort')||'n'))).then(function(response) {if(response.status==403) {dia2.showModal();return} //else  if(response.status==429) {setTimeout(get, 500,folder);return}  //
+fetch(folder+'files.lst.txt?'+(para?para:'sort='+(urlvar('sort')||'n'))).then(function(response) {if(response.status==403) {dia2.showModal();return} //else  if(response.status==429) {setTimeout(get, 500,folder);return}  //
 if(response.body && typeof(TextEncoder)!='undefined') {
  var reader = response.body.getReader(), txt='';
 
