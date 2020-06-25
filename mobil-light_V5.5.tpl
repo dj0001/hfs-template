@@ -14,7 +14,7 @@ header {background:#555} /*#cde*/
 /*main {background:#F1F1ED}*/
 aside {padding: 1.33em 0}
 a, li span:last-child, small {cursor: pointer; text-decoration: none}
-li a[href$="/"]::before {content:"📁"}
+li a[href$="/"]::before {content:"📁\FE0E  "; color:orange}
 li>div, aside, header {display: flex; flex-wrap: wrap; justify-content: space-between; font-family:Helvetica; width:100%}
 li {display:flex; border-top: 1px solid #ddd}
 li>div,img {padding: .3em 0}
@@ -29,6 +29,7 @@ img+div a[href$=".jpg"]::before {content:""}
 a[href$=".mp4"]::before {content:"🎞  "} /*🎬*/
 a[href*="://"]::before, a[href$=".htm"]::before  {content:"🌎  "} /*🔗*/
 a[href$=".comment"]::before {content:"💬  "}
+a[href*=".txt"]::before {content:"📝  "}
 
 .checked {background:#f5f5f5}
 .check main div span:last-child::after {content:" \2610"} /*26aa*/
@@ -58,7 +59,7 @@ form {display:inline-block}
 li a+span {margin:0px 10px 0px auto}
 @media(max-width:480px) {li span{margin-left:auto}}
 ul {padding-left: 0px;}
-small::before {content:"\1f552"}
+small::before {content:"🕒"}
 .check small::before {content:"\2611"}
 .err::before {background:rgba(255,0,0,0.5)}
 #upload {width:74px; background-position:-74px; transition:none}
@@ -88,7 +89,7 @@ li, aside {scroll-snap-align: start}
 <dialog><form><input list='cat' type='search' placeholder='search...' name='qf'><input type='checkbox' checked title='subfolder'><button type="submit">&#x2315;</button></form> <button onclick='this.parentNode.close()'><sup>&times;</sup></button></dialog>
 <datalist id='cat'><option value="*.jpg;*.png;*.gif">image</option><option value="*.mp3;*.ogg;*.m3u">audio</option><option value="*.mp4;*.webm;*.mkv">video</option><option value="*&sort=s&rev=1&">large files</option></datalist>
 <button id='Delete' aria-label="Delete" onclick="del()"></button>
-<button id='Login' aria-label="Login" onclick="if(parseFloat('%version%')<2.4) location='/~login'; else dia2.showModal()" title="&#x2196;&#x2261; ***"> <span>%user%</span></button>
+<button id='Login' aria-label="Login" onclick="if(parseFloat('%version%')<2.4) location='/~login'; else dia2.showModal()" title="&#x2196;&#x2261; ***"> <span></span></button>
 <dialog id='dia2'><form><input name='user' required placeholder="Username" id='user' /><input name='password' type='password' required placeholder="Password" id='pw' minlength=4 /><button type="submit" id='LOGIN' aria-label="Login"><button id='Logout' onclick='logout()' hidden></button>
  <span></span><input type="checkbox" title='agree to use cookies' id='cb'><button   id='cpw'></button></form>
  <button onclick='this.parentNode.close()'><sup>&times;</sup></button></dialog>
@@ -103,10 +104,10 @@ const qs=['thumbsize','target'];qs.forEach(q => window[q]=urlvar(q)||window[q]);
 var folder=location.pathname.match(/.*\//)[0], b, evt=new Event('render')
 
 function urlvar(key) {return (location.search.slice(1).match(key+'=(.*?)(&|$)')||'')[1]}
-function get(val,para){ folder=val; para=para||'';
-var sm=document.querySelector('small')
+function get(val,para){ var fold0=folder; folder=val; para=para||'';
+//var sm=document.querySelector('small')
 
-fetch(folder+'~files.lst?'+(para?para:'sort='+(urlvar('sort')||'n'))).then(function(response) {if(response.status==403) {dia2.showModal();return} else  if(response.status==429) {setTimeout(get, 500,folder);return}  //
+fetch(folder+'~files.lst?'+(para?para:'sort='+(urlvar('sort')||'n'))).then(function(response) {if(response.status==403) {dia2.showModal();folder=fold0;return} else  if(response.status==429) {setTimeout(get, 500,folder);return}  //
 if(response.body && typeof(TextEncoder)!='undefined') {
  var reader = response.body.getReader(), txt='';
 
@@ -202,6 +203,7 @@ audio.onended = function() {let B=[...document.querySelectorAll('.checked a:not(
 if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', audio.onended)
 
 if(window.matchMedia('(prefers-color-scheme:dark)').matches) document.body.classList.add('dark')  //light remove
+if('%user%' && '%user%' != '%'+'user%') document.querySelector('#Login>span').textContent='%user%'  //
 document.querySelector('#dia2 form').onsubmit = function(){login(); this.parentNode.close(); return false}
 var sha256 = function(s) {return SHA256.hash(s)}
 
@@ -253,9 +255,10 @@ if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); use
 [rename|public]
 {.rename|{.force ansi|{.?from.}.}|{.force ansi|{.?to.}.}.}
 
-
 [login]
-<h1>Login</h1><a href="/~signin">&#x1f464; Login</a>
+<h1>Login</h1><a href="/">&#x1f464; Login</a>
+
+[error-page]
 
 [api level]
 2
