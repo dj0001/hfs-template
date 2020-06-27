@@ -89,9 +89,9 @@ li, aside {scroll-snap-align: start}
 <dialog><form><input list='cat' type='search' placeholder='search...' name='qf'><input type='checkbox' checked title='subfolder'><button type="submit">&#x2315;</button></form> <button onclick='this.parentNode.close()'><sup>&times;</sup></button></dialog>
 <datalist id='cat'><option value="*.jpg;*.png;*.gif">image</option><option value="*.mp3;*.ogg;*.m3u">audio</option><option value="*.mp4;*.webm;*.mkv">video</option><option value="*&sort=s&rev=1&">large files</option></datalist>
 <button id='Delete' aria-label="Delete" onclick="del()"></button>
-<button id='Login' aria-label="Login" onclick="if(parseFloat('%version%')<2.4) location='/~login'; else dia2.showModal()" title="&#x2196;&#x2261; ***"> <span></span></button>
+<button id='Login' aria-label="Login" onclick="if(parseFloat('%version%')<2.4) location='/~login'; else dia2.showModal()" > <span></span></button>
 <dialog id='dia2'><form><input name='user' required placeholder="Username" id='user' /><input name='password' type='password' required placeholder="Password" id='pw' minlength=4 /><button type="submit" id='LOGIN' aria-label="Login"><button id='Logout' onclick='logout()' hidden></button>
- <span></span><input type="checkbox" title='agree to use cookies' id='cb'><button   id='cpw'></button></form>
+ <span></span><input type="checkbox" title='agree to use cookies' id='cb'><button   id='cpw' title="*** ↖≡ ​👁"></button></form>
  <button onclick='this.parentNode.close()'><sup>&times;</sup></button></dialog>
 <button id='Archive' aria-label="Archive" title='&#x2611' onclick='del("Archive ")'></button>
 </header>
@@ -228,6 +228,7 @@ if('%user%') {user.placeholder="%user%"; user.classList.add("outbox")}
 document.querySelector("#dia2 input[type=checkbox]").onchange=function(){if(!this.checked) localStorage.removeItem('login')}
 if(localStorage.login) document.querySelector("#dia2 input[type=checkbox]").checked=true
 if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); user.value=tmp[0]; pw.value=tmp[1]; var myform=document.querySelector("#dia2 form"); if (myform.requestSubmit) myform.requestSubmit(); else myForm.submit()}
+pw.oncontextmenu=function(){this.type = this.type=='text'?'password':'text'}  //
 </script>
 </body>
 </html>
