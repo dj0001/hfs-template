@@ -1,11 +1,12 @@
 [+]
 <script>  //txtedit  disable Numberfiles
+var ext='.comment'  //edit here '.m3u'
 document.querySelector('#files').addEventListener('click', function(e){
-if(!e.target.href||(!e.target.href.endsWith('.txt')&&!e.target.href.endsWith('.comment'))) return;  //disable single commentfile
+if(!e.target.href||(!e.target.href.endsWith('.txt')&&!e.target.href.endsWith(ext))) return;  //disable single commentfile
 if(e.target.parentNode.parentNode.lastChild.tagName=='TEXTAREA') return;
 e.preventDefault()  //
 var el=document.createElement('textarea')
-fetch(e.target.href,{cache:"no-cache"}).then(res => res.text()).then(txt => {el.value=txt; el.disabled=upload.disabled})  //always UTF-8
+fetch(e.target.href,{cache:"no-cache"}).then(res => res.text()).then(txt => {el.value=txt; el.disabled=upload.disabled; if(txt.startsWith('http')) e.target.href=txt})  //always UTF-8
 el.style.width='100%'
 e.target.parentNode.parentNode.style.display='block'
 //e.target.parentNode.style.display='none'
@@ -21,7 +22,7 @@ function newtxt(txt,name){
  fetch(folder,{method:'POST',body:fd}).then(response => get(folder));
 }
 
-document.addEventListener('render', function(){document.querySelectorAll('a[href$=".comment"]').forEach(el => el.click())})  //mobil-light_V5.4
+document.addEventListener('render', function(){document.querySelectorAll('a[href$="'+m3u+'"]').forEach(el => el.click())})  //mobil-light_V5.4
 
 //Delete.oncontextmenu=function(){var ref=document.querySelector('.checked'), tmp=prompt("new file",(ref?ref.firstChild.text:'new')+'.txt');if(tmp) newtxt('',tmp);return false}
 //Delete.title='\u2196\u2261 +'
