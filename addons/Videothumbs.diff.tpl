@@ -1,4 +1,4 @@
-[+|template=mobillight 5.5*,default 2.4*]
+[+]
 <script>
 function videoth(){
 let b=document.querySelectorAll('a[href$=".mp4"]')
@@ -8,7 +8,7 @@ b.forEach(item => {
  vid.preload='metadata'
  vid.src=item.href
  vid.height='64'; vid.width='64'  //;vid.loading='lazy'
- vid.onloadedmetadata=function(){this.title=new Date(this.duration*1000).toJSON().slice(14,-5)}  //
+ vid.onloadedmetadata=function(){this.title=new Date(this.duration*1000).toJSON().slice(12,-8)}  //14,-5
  item.parentNode.parentNode.prepend(vid)
 })
 }; if(!document.querySelector('main')) videoth()  //hfs2.4
