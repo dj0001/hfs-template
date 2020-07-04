@@ -8,7 +8,7 @@ b.forEach(item => {
  vid.preload='metadata'
  vid.src=item.href
  vid.height='64'; vid.width='64'  //;vid.loading='lazy'
- vid.onloadedmetadata=function(){this.title =new Date(Math.ceil(Math.max(this.duration-15,0)/60)*60000).toJSON().slice(12,-8)}  //14,-5
+ vid.onloadedmetadata=function(){this.title =new Date(Math.ceil((this.duration-15)/60)*60000).toJSON().slice(12,-8)}  //14,-5
  item.parentNode.parentNode.prepend(vid)
 })
 }; if(!document.querySelector('main')) videoth()  //hfs2.4
