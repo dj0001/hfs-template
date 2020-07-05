@@ -8,7 +8,7 @@ b.forEach(item => {
  vid.preload='metadata'
  vid.src=item.href
  vid.height='64'; vid.width='64'  //;vid.loading='lazy'
- vid.onloadedmetadata=function(){this.title =new Date(Math.ceil((this.duration-15)/60)*60000).toJSON().slice(12,-8)}  //14,-5
+ vid.onloadedmetadata=function(){item.title =new Date(Math.ceil((this.duration-15)/60)*60000).toJSON().slice(12,-8)}  //14,-5  //this.title
  item.parentNode.parentNode.prepend(vid)
 })
 }; if(!document.querySelector('main')) videoth()  //hfs2.4
@@ -19,5 +19,8 @@ document.querySelector('#files').addEventListener("click", function(e){if(e.targ
 
 [+]
 <style>
-/* video[title$='0:00'] + div a[href$=".mp4"]::before {content:"🎬  "} */ /*short clips (Reels)*/
+/*
+a[href$=".mp4"]::before {content:attr(title) ' '}
+a[title='0:00']::before {content:"🎬 "} /*short clips (Reels)*/
+*/
 </style>
