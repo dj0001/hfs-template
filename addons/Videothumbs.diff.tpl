@@ -9,7 +9,9 @@ b.forEach(item => {
  vid.src=item.href
  vid.height='64'; vid.width='64'  //;vid.loading='lazy'
  vid.onloadedmetadata=function(){item.title =new Date(Math.ceil((this.duration-15)/60)*60000).toJSON().slice(12,-8)}  //14,-5  //this.title
- item.parentNode.parentNode.prepend(vid)
+ let ref=item.parentNode
+ ref=ref.parentNode  //uncommend for takeback
+ ref.prepend(vid)
 })
 }; if(!document.querySelector('main')) videoth()  //hfs2.4
 else document.addEventListener('render', videoth)  //mobil-light_V5.4
