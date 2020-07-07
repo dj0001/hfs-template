@@ -192,7 +192,7 @@ var ref = document.querySelectorAll('.checked'), qstr=''
 ref.forEach(item => qstr+='&selection='+item.firstChild.getAttribute('href'))
 if(!qstr) {document.querySelector('body').classList.toggle("check"); return}
 if(!confirm((ar||"Delete ")+ref.length+" file(s) ?")) return
-ct={"Content-type":"application/x-www-form-urlencoded"}; 
+var ct={"Content-type":"application/x-www-form-urlencoded"}; 
 if(!ar) fetch(folder,{method:'POST',body:"action=delete"+qstr,headers:ct}).then(response => get(folder))
 else fetch(folder+"?mode=archive&recursive",{method:'POST',body:qstr,headers:ct}).then(response => response.blob()).then(data =>{a.href=URL.createObjectURL(data);a.click()})
 }
