@@ -4,6 +4,7 @@
 <script>
 document.querySelector('button').onclick=get
 var adr=location.search.slice(1) || 'https://raw.githubusercontent.com/dj0001/hfs-template/gh-pages/mobil-light_V5.5.tpl'
+adr=decodeURIComponent(adr)  //?
 
 function get(){
  var a=document.querySelector('a')
