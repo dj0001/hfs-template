@@ -1,0 +1,21 @@
+<a hidden download='language_en.txt'></a>
+<button>Download</button>
+
+<script>
+document.querySelector('button').onclick=get
+var adr=location.search.slice(1) || 'https://raw.githubusercontent.com/dj0001/hfs-template/gh-pages/mobil-light_V5.5.tpl'
+
+function get(){
+ var a=document.querySelector('a')
+ fetch(adr).then(res => {if(!res.ok) throw Error('404'); return res.text()})
+  .then(txt => {
+ var lng=txt.match(/{\.!.+?\.}/g)  
+ var uniq = [...new Set(lng)];  //remove duplicates
+ var txt=''
+ uniq.forEach(it => { txt+=it.slice(3,-2)+'=\n' })
+ var b=''  //'[+special:strings]\n'
+ if(b) a.download='language_en.diff.tpl'
+ txt=new Blob([b+txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
+  } )
+}
+</script>
