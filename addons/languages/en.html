@@ -14,7 +14,6 @@ function get(){
  var txt=''  //'[+special:strings]\n'
  if(txt) a.download='language_en.diff.tpl'
  uniq.forEach(it => { txt+=it.slice(3,-2)+'=\n' })
- var b=''
  txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
   } )
 }
