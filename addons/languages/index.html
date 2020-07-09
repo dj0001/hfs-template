@@ -15,9 +15,9 @@ sel.value = location.search.slice(1) || navigator.language.split('-')[0]; // /?e
 document.querySelector('button').onclick=get
 
 function get(){
- var lng=sel.value
+ var lng=sel.value||location.search.slice(1)
  a.download='language_'+lng+'.diff.tpl'
- fetch('https://dj0001.github.io/hfs-template/addons/languages/'+lng+'.txt').then(res => res.text())
+ fetch('https://dj0001.github.io/hfs-template/addons/languages/'+lng+'.txt').then(res => {if(!res.ok) throw Error('404'); return res.text()})
   .then(txt => {txt=new Blob(['[+special:strings]\n'+txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()} )
 }
 </script>
