@@ -11,11 +11,11 @@ function get(){
   .then(txt => {
  var lng=txt.match(/{\.!.+?\.}/g)  
  var uniq = [...new Set(lng)];  //remove duplicates
- var txt=''
+ var txt=''  //'[+special:strings]\n'
+ if(txt) a.download='language_en.diff.tpl'
  uniq.forEach(it => { txt+=it.slice(3,-2)+'=\n' })
- var b=''  //'[+special:strings]\n'
- if(b) a.download='language_en.diff.tpl'
- txt=new Blob([b+txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
+ var b=''
+ txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
   } )
 }
 </script>
