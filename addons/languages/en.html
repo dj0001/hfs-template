@@ -1,11 +1,12 @@
 <a hidden download='language_en.txt'></a>
-<button>Download</button> <label for='bt'></label>
+<button>Download</button> <a></a>
 
 <script>
 document.querySelector('button').onclick=get
 var adr=location.search.slice(1) || 'https://raw.githubusercontent.com/dj0001/hfs-template/gh-pages/mobil-light_V5.5.tpl'
 adr=decodeURIComponent(adr)  //?
-document.querySelector('label').textContent=adr.replace('https://raw.githubusercontent.com/','')
+document.querySelector('button~a').textContent=adr.replace('https://raw.githubusercontent.com/','')
+document.querySelector('button~a').href='https://github.com/'+document.querySelector('button~a').textContent.match(/.+?\/.+?\//)
 
 function get(){
  var a=document.querySelector('a')
