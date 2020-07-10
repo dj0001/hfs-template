@@ -6,7 +6,7 @@ document.querySelector('button').onclick=get
 var adr=location.search.slice(1) || 'https://raw.githubusercontent.com/dj0001/hfs-template/gh-pages/mobil-light_V5.5.tpl'
 adr=decodeURIComponent(adr)  //?
 document.querySelector('button~a').textContent=adr.replace('https://raw.githubusercontent.com/','')
-document.querySelector('button~a').href='https://github.com/'+document.querySelector('button~a').textContent.match(/.+?\/.+?\//)
+document.querySelector('button~a').href='https://github.com/'+document.querySelector('button~a').textContent.replace(/.+?\/.+?\//,'$&blob/')
 
 function get(){
  var a=document.querySelector('a')
