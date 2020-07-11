@@ -18,6 +18,7 @@ function get(){
  if(txt) a.download='language_en.diff.tpl'
  uniq.forEach(it => { if(!it.startsWith('option.',3)) txt+=it.slice(3,-2)+'=\n' })  //remove special:strings
  txt=txt.replace('{.if|{.length|{.?search','No files')  //fixed manuel
+ txt=txt.replace('%reason%','File name or extension forbidden.')  //
  txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
   } )
 }
