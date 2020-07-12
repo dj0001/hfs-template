@@ -24,7 +24,7 @@ a.download='language_en'+(difftpl?'.diff.tpl':'.txt')
 
 document.querySelector('select').onchange=function(){
  a.download='language_'+this.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')
- if(this.value) fetch('https://raw.githubusercontent.com/'+this.value).then(res => res.text()).then(txt => txt0=txt); else txt0=''
+ if(this.value) fetch('https://raw.githubusercontent.com/'+this.value).then(res => res.text()).then(txt => {txt0=txt; this.selectedOptions[0].title=txt.match(/\n/g).length+' items'}); else txt0=''
 }
 
 function get(){
