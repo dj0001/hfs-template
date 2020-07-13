@@ -24,7 +24,8 @@ a.download='language_en'+(difftpl?'.diff.tpl':'.txt')
 
 document.querySelector('select').onchange=function(){
  a.download='language_'+this.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')
- if(this.value) fetch('https://raw.githubusercontent.com/'+this.value).then(res => res.text()).then(txt => {txt0=txt; this.selectedOptions[0].title=txt.match(/\n/g).length+' items'}); else txt0=''
+ if(this.value) fetch('https://raw.githubusercontent.com/'+this.value).then(res => res.text()).then(txt => {txt0=txt; this.selectedOptions[0].title=txt.match(/\n/g).length+' items'});
+  else txt0=''
 }
 
 function get(){
@@ -36,6 +37,7 @@ function get(){
  var uniq = [...new Set(lng)];  //remove duplicates
  var txt = difftpl? '[+special:strings]\n':''
  uniq.forEach(it => { if(!it.startsWith('option.',3)) txt += it.slice(3,-2)+'='+(txt0.match(it.slice(3,-2)+'=(.+)')||[,''])[1]+'\n' })  //remove special:strings
+ console.log((txt.match(/=\n/g)||[]).length+'('+txt.match(/\n/g).length+') not translated')  //
  txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
   } )
 }
