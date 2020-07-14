@@ -1,3 +1,4 @@
+<header><input type="checkbox"> I'll will post my translation on the <a href='http://rejetto.com/forum/index.php?topic=13313.0'>forum</a></header><br>
 <select >
  <option value="">en</option>
  <optgroup label='default'>
@@ -33,6 +34,7 @@ document.querySelector('select').onchange=function(){
 }
 
 function get(){
+ if(!document.querySelector('input').checked) {alert('First accept the terms of use'); return}  //
  fetch(adr).then(res => {if(!res.ok) throw Error('404'); return res.text()})
   .then(txt => {
  txt=txt.replace('{.!%reason%.}','{.!File name or extension forbidden..}')  //
