@@ -24,7 +24,7 @@ adr=decodeURIComponent(adr)
 document.querySelector('button~a').textContent=adr.replace('https://raw.githubusercontent.com/','')
 document.querySelector('button~a').href='https://github.com/'+document.querySelector('button~a').textContent.replace(/.+?\/.+?\//,'$&blob/')
 
-var txt0='', a=document.querySelector('a')
+var txt0='', a=document.querySelector('a[hidden]')
 a.download='language_en'+(difftpl?'.diff.tpl':'.txt')
 
 document.querySelector('select').onchange=function(){
