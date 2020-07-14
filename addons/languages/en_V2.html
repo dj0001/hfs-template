@@ -27,10 +27,10 @@ document.querySelector('button~a').textContent=adr.replace('https://raw.githubus
 document.querySelector('button~a').href='https://github.com/'+document.querySelector('button~a').textContent.replace(/.+?\/.+?\//,'$&blob/')
 
 var txt0='', a=document.querySelector('a[hidden]')
-a.download='language_en'+(difftpl?'.diff.tpl':'.txt')
+a.download='en'+(difftpl?'_lng.diff.tpl':'.txt')
 
 document.querySelector('select').onchange=function(){
- a.download='language_'+this.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')
+ a.download=this.selectedOptions[0].text+(difftpl? '_lng.diff.tpl':'.txt')
  if(this.value) fetch('https://raw.githubusercontent.com/'+this.value).then(res => res.text()).then(txt => {txt0=txt; this.selectedOptions[0].title=txt.match(/\n/g).length+' items'});
   else txt0=''
 }
@@ -45,6 +45,7 @@ function get(){
  var txt = difftpl? '[+special:strings]\r\n':''
  uniq.forEach(it => { if(!it.startsWith('option.',3)) txt += it.slice(3,-2)+'='+(txt0.match(it.slice(3,-2)+'=(.+)')||[,''])[1]+'\r\n' })  //remove special:strings
  console.log((txt.match(/=\r\n/g)||[]).length+'('+txt.match(/\n/g).length+') not translated')  //
+ txt += "# don't forget to post your translation\r\n"  //
  txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
   } )
 }
