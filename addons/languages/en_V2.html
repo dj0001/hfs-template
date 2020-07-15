@@ -45,6 +45,7 @@ function get(){
  var txt = difftpl? '[+special:strings]\r\n':''
  uniq.forEach(it => { if(!it.startsWith('option.',3)) txt += it.slice(3,-2)+'='+(txt0.match(it.slice(3,-2)+'=(.+)')||[,''])[1]+'\r\n' })  //remove special:strings
  console.log((txt.match(/=\r\n/g)||[]).length+'('+txt.match(/\n/g).length+') not translated')  //
+ txt=txt.replace(/(max s dl msg=)\r\n/,'$1There is a limit on the number of simultaneous downloads on this server\r\n')  //
  txt += "# don't forget to post your translation\r\n"  //
  txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
   } )
