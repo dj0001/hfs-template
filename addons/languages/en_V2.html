@@ -15,10 +15,10 @@
  </optgroup>
 </select>
 <a hidden ></a>
-<button>Download</button> <a></a>
+<button title="&#x2196;&#x2261; .diff.tpl">Download</button> <a></a>
 
 <script>
-const difftpl=false  //edit here
+var difftpl=false  //edit here
 
 document.querySelector('button').onclick=get
 var adr=location.search.slice(1) || 'https://raw.githubusercontent.com/dj0001/hfs-template/gh-pages/mobil-light_V5.5.tpl'
@@ -27,10 +27,10 @@ document.querySelector('button~a').textContent=adr.replace('https://raw.githubus
 document.querySelector('button~a').href='https://github.com/'+document.querySelector('button~a').textContent.replace(/.+?\/.+?\//,'$&blob/')
 
 var txt0='', a=document.querySelector('a[hidden]')
-a.download='en'+(difftpl?'_lng.diff.tpl':'.txt')
+a.download='en'+(difftpl?'.diff.tpl':'.txt')
 
 document.querySelector('select').onchange=function(){
- a.download=this.selectedOptions[0].text+(difftpl? '_lng.diff.tpl':'.txt')
+ a.download=this.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')  //'_lng
  if(this.value) fetch('https://raw.githubusercontent.com/'+this.value).then(res => res.text()).then(txt => {txt0=txt; this.selectedOptions[0].title=txt.match(/\n/g).length+' items'});
   else txt0=''
 }
@@ -50,4 +50,6 @@ function get(){
  txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
   } )
 }
+
+document.querySelector('button').oncontextmenu=function(){difftpl=!difftpl; this.title=difftpl?'.diff.tpl':'.txt' ; return false}  //
 </script>
