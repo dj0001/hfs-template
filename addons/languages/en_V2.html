@@ -28,6 +28,7 @@ document.querySelector('button~a').href='https://github.com/'+document.querySele
 
 var txt0='', a=document.querySelector('a[hidden]')
 a.download='en'+(difftpl?'.diff.tpl':'.txt')
+document.querySelector('select').selectedIndex=[...document.querySelector('select').options].findIndex(el => el.text.slice(0,2)==navigator.language.split('-')[0])  //
 
 document.querySelector('select').onchange=function(){
  a.download=this.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')  //'_lng
