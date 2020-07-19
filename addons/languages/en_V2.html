@@ -39,6 +39,7 @@ document.querySelector('select').onchange=function(){
 
 document.querySelector('select').selectedIndex=Math.max([...document.querySelector('select').options].findIndex(el => el.text.slice(0,2)==navigator.language.split('-')[0]),0)  //
 document.querySelector('select').onchange()
+const i18={en:'Download', es:'Descargar', zh:'下载'}; document.querySelector('#button').textContent=i18[navigator.language.split('-')[0]]||i18['en']  //
  
 function get(){
  fetch(adr).then(res => {if(!res.ok) throw Error('404'); return res.text()})
@@ -56,5 +57,5 @@ function get(){
   } )
 }
 
-document.querySelector('button').oncontextmenu=function(){difftpl=!difftpl; this.title=difftpl?'.diff.tpl':'.txt' ; return false}  //
+document.querySelector('#button').oncontextmenu=function(){difftpl=!difftpl; this.title=difftpl?'.diff.tpl':'.txt' ; document.querySelector('select').onchange(); return false}  //
 </script>
