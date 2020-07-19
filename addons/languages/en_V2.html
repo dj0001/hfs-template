@@ -6,7 +6,10 @@
  <optgroup label='default'>
  <option value="dj0001/hfs-template/master/addons/languages/default/es.txt" title='*Leo'>es*</option>
  <option value="dj0001/hfs-template/master/addons/languages/default/zh.txt" title='*NaitLee'>zh*</option>
- </optgroup>
+ <option value="dj0001/hfs-template/master/addons/languages/default/de.txt" title='*translations are welcome' disabled>*de</option>
+ <option value="dj0001/hfs-template/master/addons/languages/default/it.txt" title='*translations are welcome' disabled>*it</option>
+ <option value="dj0001/hfs-template/master/addons/languages/default/ru.txt" title='*translations are welcome' disabled>*ru</option>
+</optgroup>
  <optgroup label='light'>
  <option value="dj0001/hfs-template/master/addons/languages/es.txt">es</option>
  <option value="dj0001/hfs-template/master/addons/languages/de.txt">de</option>
@@ -47,7 +50,7 @@ function get(){
  uniq.forEach(it => { if(!it.startsWith('option.',3)) txt += it.slice(3,-2)+'='+(txt0.match(it.slice(3,-2)+'=(.+)')||[,''])[1]+'\r\n' })  //remove special:strings
  console.log((txt.match(/=\r\n/g)||[]).length+'('+txt.match(/\n/g).length+') not translated')  //
  txt=txt.replace(/(max s dl msg=)\r\n/,'$1There is a limit on the number of simultaneous downloads on this server\r\n')  //
- txt += "# don't forget to post your translation\r\n"  //
+ txt +=  (txt0.match('# ©\w+')||'#') +  " don't forget to post your translation\r\n"  //
  txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
   } )
 }
