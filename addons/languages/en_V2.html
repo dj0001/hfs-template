@@ -30,8 +30,6 @@ document.querySelector('button~a').textContent=adr.replace('https://raw.githubus
 document.querySelector('button~a').href='https://github.com/'+document.querySelector('button~a').textContent.replace(/.+?\/.+?\//,'$&blob/')
 
 var txt0='', a=document.querySelector('a[hidden]')
-a.download='en'+(difftpl?'.diff.tpl':'.txt')
-document.querySelector('select').selectedIndex=[...document.querySelector('select').options].findIndex(el => el.text.slice(0,2)==navigator.language.split('-')[0])  //
 
 document.querySelector('select').onchange=function(){
  a.download=this.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')  //'_lng
@@ -39,6 +37,9 @@ document.querySelector('select').onchange=function(){
   else txt0=''
 }
 
+document.querySelector('select').selectedIndex=Math.max([...document.querySelector('select').options].findIndex(el => el.text.slice(0,2)==navigator.language.split('-')[0]),0)  //
+document.querySelector('select').onchange()
+ 
 function get(){
  fetch(adr).then(res => {if(!res.ok) throw Error('404'); return res.text()})
   .then(txt => {
@@ -50,7 +51,7 @@ function get(){
  uniq.forEach(it => { if(!it.startsWith('option.',3)) txt += it.slice(3,-2)+'='+(txt0.match(it.slice(3,-2)+'=(.+)')||[,''])[1]+'\r\n' })  //remove special:strings
  console.log((txt.match(/=\r\n/g)||[]).length+'('+txt.match(/\n/g).length+') not translated')  //
  txt=txt.replace(/(max s dl msg=)\r\n/,'$1There is a limit on the number of simultaneous downloads on this server\r\n')  //
- txt +=  (txt0.match('# ©\w+')||'#') +  " don't forget to post your translation\r\n"  //
+ txt +=  (txt0.match('# ©\\w+')||'#') +  " don't forget to post your translation\r\n"  //
  txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
   } )
 }
