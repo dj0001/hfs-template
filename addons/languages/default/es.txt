@@ -80,3 +80,5 @@ Reload page=Recargar p&aacute;gina
 More options=M&aacute;s opciones
 Speed=Velocidad
 to=a
+# ©Leo
+
