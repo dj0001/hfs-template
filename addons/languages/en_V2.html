@@ -50,6 +50,7 @@ function get(){
   .then(txt => {
  txt=txt.replace('{.!%reason%.}','{.!File name or extension forbidden..}')  //
  txt=txt.replace('{.!{.if|{.length|{.?search.}.}|No results|No files.}.}','{.if|{.length|{.?search.}.}|{:{.!No results.}:}|{:{.!No files.}:}.}')  //fixed manually
+ if(location.search) txt+='{.!Folder.}'  //HFS2.3 compatibility
  var lng=txt.match(/{\.!.+?\.}/g)
  var uniq = [...new Set(lng)];  //remove duplicates
  var txt =  '[+special:strings]\r\n'  //difftpl? '[+special:strings]\r\n':''
