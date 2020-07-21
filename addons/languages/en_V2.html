@@ -8,10 +8,8 @@
  <optgroup label='default'>
  <option value="dj0001/hfs-template/master/addons/languages/default/es.txt" title='*Leo'>es*</option>
  <option value="dj0001/hfs-template/master/addons/languages/default/zh.txt" title='*NaitLee'>zh*</option>
- <option value="dj0001/hfs-template/master/addons/languages/default/de.txt" title='*translations are welcome' disabled>*de</option>
- <option value="dj0001/hfs-template/master/addons/languages/default/it.txt" title='*translations are welcome' disabled>*it</option>
- <option value="dj0001/hfs-template/master/addons/languages/default/ru.txt" title='*translations are welcome' disabled>*ru</option>
-</optgroup>
+ <option value="dj0001/hfs-template/master/addons/languages/default/fr.txt" title='*translations are welcome' disabled>*fr</option>
+ </optgroup>
  <optgroup label='light'>
  <option value="dj0001/hfs-template/master/addons/languages/es.txt">es</option>
  <option value="dj0001/hfs-template/master/addons/languages/de.txt">de</option>
@@ -39,8 +37,11 @@ document.querySelector('select').onchange=function(){
   else txt0=''
 }
 
-document.querySelector('select').selectedIndex=Math.max([...document.querySelector('select').options].findIndex(el => el.text.slice(0,2)==navigator.language.split('-')[0]),0)  //
+const myind=[...document.querySelector('select').options].findIndex(el => el.text.slice(0,2)==navigator.language.split('-')[0])
+document.querySelector('select').selectedIndex=Math.max(myind,0)  //
 document.querySelector('select').onchange()
+//if(myind<0) document.querySelector('select').options[3].text='*'+navigator.language.split('-')[0]
+
 const i18={en:'Download', es:'Descargar', zh:'下载'}; document.querySelector('#button').textContent=i18[navigator.language.split('-')[0]]||i18['en']  //
  
 function get(){
