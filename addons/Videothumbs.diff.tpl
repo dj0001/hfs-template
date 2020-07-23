@@ -16,7 +16,11 @@ b.forEach(item => {
 }; if(!document.querySelector('main')) videoth()  //hfs2.4
 else document.addEventListener('render', videoth)  //mobil-light_V5.4
 
-document.querySelector('#files').addEventListener("click", function(e){if(e.target.tagName=='VIDEO') e.target.requestPictureInPicture()})  //click icon
+document.querySelector('#files').addEventListener("click", function(e){if(e.target.tagName=='VIDEO') {e.target.requestPictureInPicture();  //click icon
+ var video=e.target
+ video.onended = function() {let B=[...document.querySelectorAll('.checked a:not([href$="/"])')], tmp=B.findIndex(o => o.href==video.src); video.src=B[(tmp+1)%B.length].href;video.play()}
+ if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttrack', video.onended)
+}})
 </script>
 
 [+]
