@@ -35,7 +35,7 @@ var txt0='', a=document.querySelector('a[hidden]')
 
 document.querySelector('select').onchange=function(){
  a.download=this.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')  //'_lng
- if(this.value) fetch('https://raw.githubusercontent.com/'+this.value).then(res => res.text()).then(txt => {txt0=txt; this.selectedOptions[0].title=txt.match(/\n/g).length+' items'});
+ if(this.value) fetch('https://raw.githubusercontent.com/'+this.value).then(res => res.text()).then(txt => {txt0=txt; this.selectedOptions[0].title=txt.match(/=.+/g).length+' items'});
   else txt0=''
 }
 
