@@ -214,4 +214,5 @@ X=X
 Hide / Show the lateral panel=Cacher / Montrer le panneau lat&eacute;ral
 Download=T&eacute;l&eacute;charger
 Archive folder or selection in a (.tar) format file=Archive le dossier ou la s&eacute;lection dans un fichier au format (.tar)
+Sort=Trier
 # ©SilentPliz
