@@ -22,6 +22,7 @@
 <button title="Download&#xa;&#x2196;&#x2261; .diff.tpl"  id='button'></button> <a></a>
 
 &nbsp;<a href='http://rejetto.com/forum/index.php?topic=13313.0' title='Post on the forum'>Upload</a>
+<meter title='translated/total'></meter>
 <script>
 var difftpl=false  //edit here
 
@@ -31,38 +32,39 @@ adr=decodeURIComponent(adr)
 document.querySelector('button~a').textContent=adr.replace('https://raw.githubusercontent.com/','')
 document.querySelector('button~a').href='https://github.com/'+document.querySelector('button~a').textContent.replace(/.+?\/.+?\//,'$&blob/')
 
-var txt0='', a=document.querySelector('a[hidden]')
+var txt0='', a=document.querySelector('a[hidden]'), uniq, sel=document.querySelector('select')
 
-document.querySelector('select').onchange=function(){
- a.download=this.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')  //'_lng
- if(this.value) fetch('https://raw.githubusercontent.com/'+this.value).then(res => res.text()).then(txt => {txt0=txt; this.selectedOptions[0].title=txt.match(/=.+/g).length+' items'});
-  else txt0=''
-}
-
-const myind=[...document.querySelector('select').options].findIndex(el => el.text.slice(0,2)==navigator.language.split('-')[0])
-document.querySelector('select').selectedIndex=Math.max(myind,0)  //
-document.querySelector('select').onchange()
-//if(myind<0) document.querySelector('select').options[3].text='*'+navigator.language.split('-')[0]
-
-const i18={en:'Download', es:'Descargar', zh:'下载'}; document.querySelector('#button').textContent=i18[navigator.language.split('-')[0]]||i18['en']  //
- 
-function get(){
  fetch(adr).then(res => {if(!res.ok) throw Error('404'); return res.text()})
   .then(txt => {
  txt=txt.replace('{.!%reason%.}','{.!File name or extension forbidden..}')  //
  txt=txt.replace('{.!{.if|{.length|{.?search.}.}|No results|No files.}.}','{.if|{.length|{.?search.}.}|{:{.!No results.}:}|{:{.!No files.}:}.}')  //fixed manually
  if(location.search) txt+='{.!Clear.}{.!#.}{.!Folder.}'  //HFS2.3 compatibility  //remove Clear after fix
  var lng=txt.match(/{\.!.+?\.}/g)
- var uniq = [...new Set(lng)];  //remove duplicates
+ uniq = [...new Set(lng)];  //remove duplicates
+ sel.options[0].title=uniq.length+' items'
+  } )
+
+const myind=[...document.querySelector('select').options].findIndex(el => el.text.slice(0,2)==navigator.language.split('-')[0])
+document.querySelector('select').selectedIndex=Math.max(myind,0)  //
+//if(myind<0) document.querySelector('select').options[3].text='*'+navigator.language.split('-')[0]
+
+const i18={en:'Download', es:'Descargar', zh:'下载'}; document.querySelector('#button').textContent=i18[navigator.language.split('-')[0]]||i18['en']  //
+ 
+function get(){
+ a.download=sel.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')
+ if(sel.value) fetch('https://raw.githubusercontent.com/'+sel.value).then(res => res.text()).then(txt => {txt0=txt; make()});  else {txt0=''; make()}
+
+function make(){
  var txt =  '[+special:strings]\r\n'  //difftpl? '[+special:strings]\r\n':''
  uniq.forEach(it => { if(!it.startsWith('option.',3)) {it=it.slice(3,-2);var patt=new RegExp('^'+it+'=(.+)','m'); txt += it+'='+(txt0.match(patt)||[,''])[1]+'\r\n' } })  //remove special:strings
  if(location.search) txt=txt.replace('#=','\r\n#following hfs2.3only')  //HFS2.3
  console.log((txt.match(/=\r\n/g)||[]).length+'('+(txt.match(/\n/g).length-1)+') not translated')  //
+ document.querySelector('meter').value=1-(txt.match(/=\r\n/g)||[]).length/(txt.match(/\n/g).length-1)  //
  txt=txt.replace(/(max s dl msg=)\r\n/,'$1There is a limit on the number of simultaneous downloads on this server\r\n')  //
  txt +=  (txt0.match('# ©\\w+')||'#') +  " don't forget to post your translation\r\n"  //
  txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
-  } )
+ } 
 }
 
-document.querySelector('#button').oncontextmenu=function(){difftpl=!difftpl; this.title=difftpl?'.diff.tpl':'.txt' ; document.querySelector('select').onchange(); return false}  //
+document.querySelector('#button').oncontextmenu=function(){difftpl=!difftpl; this.title=difftpl?'.diff.tpl':'.txt' ; return false}  //document.querySelector('select').onchange(); 
 </script>
