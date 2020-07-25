@@ -21,7 +21,7 @@
 <a hidden ></a>
 <button title="Download&#xa;&#x2196;&#x2261; .diff.tpl"  id='button'></button> <a></a>
 
-&nbsp;<a href='http://rejetto.com/forum/index.php?topic=13313.0' title='Post on the forum'>Upload</a>
+&nbsp;<a href='http://rejetto.com/forum/index.php?topic=13313.0' title='Post on the forum' ondrop="event.preventDefault();sendFiles(event.dataTransfer.files)" ondragover="return false">Upload</a>
 <meter title='translated/total'></meter>
 <script>
 var difftpl=false  //edit here
@@ -66,5 +66,6 @@ function make(){
  } 
 }
 
-document.querySelector('#button').oncontextmenu=function(){difftpl=!difftpl; this.title=difftpl?'.diff.tpl':'.txt' ; return false}  //document.querySelector('select').onchange(); 
+document.querySelector('#button').oncontextmenu=function(){difftpl=!difftpl; this.title=difftpl?'.diff.tpl':'.txt' ; return false}
+function sendFiles(files) { const reader = new FileReader(); reader.onload = function(){tx0=this.result; sel.selectedIndex=0};  reader.readAsText(files[0]) }  //test
 </script>
