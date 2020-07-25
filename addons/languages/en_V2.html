@@ -32,7 +32,7 @@ adr=decodeURIComponent(adr)
 document.querySelector('button~a').textContent=adr.replace('https://raw.githubusercontent.com/','')
 document.querySelector('button~a').href='https://github.com/'+document.querySelector('button~a').textContent.replace(/.+?\/.+?\//,'$&blob/')
 
-var txt0='', a=document.querySelector('a[hidden]'), uniq, sel=document.querySelector('select')
+var txt0='', a=document.querySelector('a[hidden]'), uniq, sel=document.querySelector('select'), tx0=''
 
  fetch(adr).then(res => {if(!res.ok) throw Error('404'); return res.text()})
   .then(txt => {
@@ -52,7 +52,7 @@ const i18={en:'Download', es:'Descargar', zh:'下载'}; document.querySelector('
  
 function get(){
  a.download=sel.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')
- if(sel.value) fetch('https://raw.githubusercontent.com/'+sel.value).then(res => res.text()).then(txt => {txt0=txt; make()});  else {txt0=''; make()}
+ if(sel.value) fetch('https://raw.githubusercontent.com/'+sel.value).then(res => res.text()).then(txt => {txt0=txt; make()});  else {txt0=tx0; make()}
 
 function make(){
  var txt =  '[+special:strings]\r\n'  //difftpl? '[+special:strings]\r\n':''
