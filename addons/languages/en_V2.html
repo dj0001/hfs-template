@@ -42,6 +42,7 @@ var txt0='', a=document.querySelector('a[hidden]'), uniq, sel=document.querySele
  var lng=txt.match(/{\.!.+?\.}/g)
  uniq = [...new Set(lng)];  //remove duplicates
  sel.options[0].title=uniq.length+' items'
+ sel.onchange()
   } )
 
 const myind=[...document.querySelector('select').options].findIndex(el => el.text.slice(0,2)==navigator.language.split('-')[0])
@@ -49,9 +50,8 @@ document.querySelector('select').selectedIndex=Math.max(myind,0)  //
 //if(myind<0) document.querySelector('select').options[3].text='*'+navigator.language.split('-')[0]
 
 const i18={en:'Download', es:'Descargar', zh:'下载'}; document.querySelector('#button').textContent=i18[navigator.language.split('-')[0]]||i18['en']  //
- 
-function get(){
- a.download=sel.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')
+
+sel.onchange=function(){
  if(sel.value) fetch('https://raw.githubusercontent.com/'+sel.value).then(res => res.text()).then(txt => {txt0=txt; make()});  else {txt0=tx0; make()}
 
 function make(){
@@ -62,10 +62,15 @@ function make(){
  document.querySelector('meter').value=1-(txt.match(/=\r\n/g)||[]).length/(txt.match(/\n/g).length-1)  //
  txt=txt.replace(/(max s dl msg=)\r\n/,'$1There is a limit on the number of simultaneous downloads on this server\r\n')  //
  txt +=  (txt0.match('# ©\\w+')||'#') +  " don't forget to post your translation\r\n"  //
- txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt); a.click()
- } 
+ txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt);
+ }
+}
+
+function get(){
+ a.download=sel.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')
+ a.click()
 }
 
 document.querySelector('#button').oncontextmenu=function(){difftpl=!difftpl; this.title=difftpl?'.diff.tpl':'.txt' ; return false}
-function sendFiles(files) { const reader = new FileReader(); reader.onload = function(){tx0=this.result; sel.selectedIndex=0};  reader.readAsText(files[0]) }  //test
+function sendFiles(files) { const reader = new FileReader(); reader.onload = function(){tx0=this.result; sel.selectedIndex=0; sel.onchange()};  reader.readAsText(files[0]) }  //test
 </script>
