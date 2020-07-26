@@ -19,7 +19,7 @@ li>div, aside, header {display: flex; flex-wrap: wrap; justify-content: space-be
 li {display:flex; border-top: 1px solid #ddd}
 li>div,img {padding: .3em 0}
 li span {color:#757575}
-button::after, #Login>span::after {background:#cde}
+header>button {background:#cde; border-radius:2px; border:0; margin:2px} header>button:hover {opacity:.9}  /*button::after, #Login>span::after {background:#cde}*/
 
 a[href*="."]::before {content:"📄  "}
 nav a[href*="."]::before {content:""}
@@ -32,8 +32,8 @@ a[href$=".comment"]::before {content:"💬  "}
 a[href*=".txt"]::before {content:"📝  "}
 
 .checked {background:#f5f5f5}
-.check main div span:last-child::after {content:" \2610"} /*26aa*/
-.check .checked span:last-child::after {content:" \2611"} /*26ab*/
+.check main div span:last-child::after {content:" ☐"} /*⚪*/
+.check .checked span:last-child::after {content:" ☑"} /*⚫*/
 nav {font-weight: bold}
 a[href$="/"]:active {background:#c2c2c2}
 .dark, .dark li a, .dark li span {background:#555; color:white}
