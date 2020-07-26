@@ -59,7 +59,7 @@ function make(){
  uniq.forEach(it => { if(!it.startsWith('option.',3)) {it=it.slice(3,-2);var patt=new RegExp('^'+it+'=(.+)','m'); txt += it+'='+(txt0.match(patt)||[,''])[1]+'\r\n' } })  //remove special:strings
  if(location.search) txt=txt.replace('#=','\r\n#following hfs2.3only')  //HFS2.3
  console.log((txt.match(/=\r\n/g)||[]).length+'('+(txt.match(/\n/g).length-1)+') not translated')  //
- document.querySelector('meter').value=1-(txt.match(/=\r\n/g)||[]).length/(txt.match(/\n/g).length-1)  //
+ var m=document.querySelector('meter'); m.value=1-(txt.match(/=\r\n/g)||[]).length/(txt.match(/\n/g).length-1); m.title=(m.value*100).toFixed()+'% translated'  //
  txt=txt.replace(/(max s dl msg=)\r\n/,'$1There is a limit on the number of simultaneous downloads on this server\r\n')  //
  txt +=  (txt0.match('# ©\\w+')||'#') +  " don't forget to post your translation\r\n"  //
  txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt);
