@@ -1,5 +1,5 @@
 [every 24 hours]
 {.load|https://raw.githubusercontent.com/dj0001/hfs-template/master/hfs-version.txt|var=sver.}
-{.add to log|Check tpl update: {.^sver.}.}
+{.add to log|Check tpl update: {.^sver.}|{.if not|{.^#ver.}|#808080.}.}
 {.if|{.{.^sver.}!={.^#ver.}.}|{:{.if|{.dialog|update tpl?|question okcancel.}|{:{.load|https://raw.githubusercontent.com/dj0001/hfs-template/gh-pages/mobil-light_V5.5.tpl|var=mytext.}{.save |mobil-light_V5.5.tpl|var=mytext.}:}.}:}.}
 {.set|#ver|{.^sver.}.}
