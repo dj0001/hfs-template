@@ -2,4 +2,4 @@
 {.load|https://raw.githubusercontent.com/dj0001/hfs-template/master/hfs-version.txt|var=sver.}
 {.load|mobil-light_V5.5.tpl|from=167|to=172|var=cver.}
 {.add to log|Check tpl update: {.^sver.}|{.if not|{.^cver.}|#808080.}.}
-{.if|{.{.^sver.}!={.^cver.}.}|{:{.if|{.dialog|update tpl?|question okcancel.}|{:{.load|https://raw.githubusercontent.com/dj0001/hfs-template/gh-pages/mobil-light_V5.5.tpl|var=mytext.}{.save |mobil-light_V5.5.tpl|var=mytext.}:}.}:}.}
+{.if|{.{.^sver.}!={.^cver.}.}|{:{.if|{.dialog|update tpl?|question okcancel.}|{:{.load|https://raw.githubusercontent.com/dj0001/hfs-template/gh-pages/mobil-light_V5.5.tpl|var=mytext.}{.save |mobil-light_V5.5.tpl|var=mytext.}{.add to log|Downloaded mobil-light_V5.5.tpl.}:}.}:}.}
