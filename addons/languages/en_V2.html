@@ -24,6 +24,8 @@
 
 &nbsp;<a href='http://rejetto.com/forum/index.php?topic=13313.0' title='Post on the forum' ondrop="event.preventDefault();sendFiles(event.dataTransfer.files)" ondragover="return false">Upload</a>
 <meter title='translated/total'></meter>
+<footer><br><small>30.07. Now you can also start with <a href='http://rejetto.com/forum/index.php?topic=5524.0'>RAWR Translations</a>. Drag and dropt them to Upload.</small></footer>
+
 <script>
 var difftpl=false  //edit here
 
@@ -57,7 +59,7 @@ sel.onchange=function(){
 
 function make(){
  var txt =  '[+special:strings]\r\n'  //difftpl? '[+special:strings]\r\n':''
- uniq.forEach(it => { if(!it.startsWith('option.',3)) {it=it.slice(3,-2);var patt=new RegExp('^'+it+'=(.+)','m'); txt += it+'='+(txt0.match(patt)||[,''])[1]+'\r\n' } })  //remove special:strings
+ uniq.forEach(it => { if(!it.startsWith('option.',3)) {it=it.slice(3,-2);var patt=new RegExp('^(?:lv_)?'+it+'=(.+)','mi'); txt += it+'='+(txt0.match(patt)||[,''])[1]+'\r\n' } })  //remove special:strings
  if(location.search) txt=txt.replace('#=','\r\n#following hfs2.3only')  //HFS2.3
  console.log((txt.match(/=\r\n/g)||[]).length+'('+(txt.match(/\n/g).length-1)+') not translated')  //
  var m=document.querySelector('meter'); m.value=1-(txt.match(/=\r\n/g)||[]).length/(txt.match(/\n/g).length-1); m.title=(m.value*100).toFixed()+'% translated'  //
