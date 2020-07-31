@@ -75,5 +75,5 @@ function get(){
 }
 
 document.querySelector('#button').oncontextmenu=function(){difftpl=!difftpl; this.title=difftpl?'.diff.tpl':'.txt' ; return false}
-function sendFiles(files) { const reader = new FileReader(); reader.onload = function(){tx0=this.result; sel.selectedIndex=0; sel.onchange(); button.focus()};  reader.readAsText(files[0]) }  //test
+function sendFiles(files) { const reader = new FileReader(); reader.onload = function(){tx0=this.result; sel.selectedIndex=0; sel.onchange(); button.focus(); sel[0].text=files[0].name.slice(0,2)};  reader.readAsText(files[0]) }  //test
 </script>
