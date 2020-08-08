@@ -1,41 +1,39 @@
 <head><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Download language file</title><meta name="Description" content="Post your translation on the forum">
 <link rel="icon" sizes="192x192" href="https://dj0001.github.io/hfs-template/icon.png">
-<style>input:not(:checked)~#button{pointer-events:none}</style></head>
+<style>form {display:inline-block}</style>
+</head>
 
-<!-- <input type="checkbox" checked> I'll will post my translation on the <a href='http://rejetto.com/forum/index.php?topic=13313.0'>forum</a><br><br> -->
-<select >
- <option value="">en</option>
- <optgroup label='default'>
- <option value="dj0001/hfs-template/master/addons/languages/default/es.txt" title='*Leo'>es*</option>
- <option value="dj0001/hfs-template/master/addons/languages/default/zh.txt" title='*NaitLee'>zh*</option>
- <option value="dj0001/hfs-template/master/addons/languages/default/fr.txt" title='*SilentPliz'>fr*</option>
- <option value="dj0001/hfs-template/master/addons/languages/default/de.txt" title='*translations are welcome' disabled>*de</option>
- </optgroup>
- <optgroup label='light'>
- <option value="dj0001/hfs-template/master/addons/languages/es.txt">es</option>
- <option value="dj0001/hfs-template/master/addons/languages/de.txt">de</option>
- <option value="dj0001/hfs-template/master/addons/languages/fr.txt">fr</option>
- <option value="dj0001/hfs-template/master/addons/languages/zh.txt">zh</option>
- </optgroup>
-</select>
+<form><input list='cat' type='text' placeholder='en' name='i18' id='inp' pattern='[a-z]{2}' title='two letter language code' size="2" maxlength="2">  <!--  value='en'   title='enter language code' -->
+<datalist id='cat'>
+  <option value=""></option>
+ <option value="es"></option>
+ <option value="zh"></option>
+ <option value="fr"></option>
+</datalist>
+
 <a hidden ></a>
-<button title="Download&#xa;&#x2196;&#x2261; .diff.tpl"  id='button'></button> <a></a>
 
+<button type='submit' title="Download&#xa;&#x2196;&#x2261; .diff.tpl"  id='button'></button> <a></a></form>
+
+<!-- &nbsp;Test:<input type="file" accept=".txt,.diff.tpl">  -->
 &nbsp;<a href='http://rejetto.com/forum/index.php?topic=13313.0' title='Post on the forum' ondrop="event.preventDefault();sendFiles(event.dataTransfer.files)" ondragover="return false">Upload</a>
 <meter title='translated/total'></meter>
-<footer><br><small>30.07. Now you can also start with <a href='http://rejetto.com/forum/index.php?topic=5524.0'>RAWR Translations</a>. Drag and drop them to Upload.</small></footer>
+<footer><br><small>30.07. Now you can also start with <a href='http://rejetto.com/forum/index.php?topic=5524.0'>RAWR Translations</a>. Drag and drop them to Upload.<br>08.08. add input</small></footer>
 
 <script>
 var difftpl=false  //edit here
 
-document.querySelector('button').onclick=get
+var inp=document.querySelector('input')
+//inp.onchange=function(){console.log(this.value)}
+
+document.querySelector('form').onsubmit = function(){get(); return false}  //document.querySelector('button').onclick=get
 var adr=location.search.slice(1) || 'https://raw.githubusercontent.com/dj0001/hfs-template/gh-pages/mobil-light_V5.5.tpl'
 adr=decodeURIComponent(adr)
 document.querySelector('button~a').textContent=adr.replace('https://raw.githubusercontent.com/','')
 document.querySelector('button~a').href='https://github.com/'+document.querySelector('button~a').textContent.replace(/.+?\/.+?\//,'$&blob/')
 
-var txt0='', a=document.querySelector('a[hidden]'), uniq, sel=document.querySelector('select'), tx0=''
+var txt0='', a=document.querySelector('a[hidden]'), uniq, tx0=''  //, sel=document.querySelector('select')
 
  fetch(adr).then(res => {if(!res.ok) throw Error('404'); return res.text()})
   .then(txt => {
@@ -44,36 +42,39 @@ var txt0='', a=document.querySelector('a[hidden]'), uniq, sel=document.querySele
  if(location.search) txt+='{.!Clear.}{.!#.}{.!Folder.}'  //HFS2.3 compatibility  //remove Clear after fix
  var lng=txt.match(/{\.!.+?\.}/g)
  uniq = [...new Set(lng)];  //remove duplicates
- sel.options[0].title=uniq.length+' items'
- sel.onchange()
+ //sel.options[0].title=uniq.length+' items'
+ //sel.onchange()
   } )
 
-const myind=[...document.querySelector('select').options].findIndex(el => el.text.slice(0,2)==navigator.language.split('-')[0])
-document.querySelector('select').selectedIndex=Math.max(myind,0)  //
-//if(myind<0) document.querySelector('select').options[3].text='*'+navigator.language.split('-')[0]
+inp.value=navigator.language.split('-')[0]  //en?
+ if(![...document.querySelector('datalist').options].some(x => x.value == inp.value)) {console.log(inp.value+' Not found!');inp.value=''}  //do the test here optional
 
 const i18={en:'Download', es:'Descargar', zh:'下载'}; document.querySelector('#button').textContent=i18[navigator.language.split('-')[0]]||i18['en']  //
 
-sel.onchange=function(){
- if(sel.value) fetch('https://raw.githubusercontent.com/'+sel.value).then(res => res.text()).then(txt => {txt0=txt; make()});  else {txt0=tx0; make()}
-
 function make(){
- var txt =  '[+special:strings]\r\n'  //difftpl? '[+special:strings]\r\n':''
+ var txt =  '[+special:strings]\r\n'  //[^special:strings]
  uniq.forEach(it => { if(!it.startsWith('option.',3)) {it=it.slice(3,-2);var patt=new RegExp('^(?:lv_)?'+it+'=(.+)','mi'); txt += it+'='+(txt0.match(patt)||[,''])[1]+'\r\n' } })  //remove special:strings
  if(location.search) txt=txt.replace('#=','\r\n#following hfs2.3only')  //HFS2.3
  console.log((txt.match(/=\r\n/g)||[]).length+'('+(txt.match(/\n/g).length-1)+') not translated')  //
+ //document.querySelector('meter').value=1-(txt.match(/=\r\n/g)||[]).length/(txt.match(/\n/g).length-1); document.querySelector('meter').title=parseInt(document.querySelector('meter').value*100)+'% translated'  //
  var m=document.querySelector('meter'); m.value=1-(txt.match(/=\r\n/g)||[]).length/(txt.match(/\n/g).length-1); m.title=(m.value*100).toFixed()+'% translated'  //
  txt=txt.replace(/(max s dl msg=)\r\n/,'$1There is a limit on the number of simultaneous downloads on this server\r\n')  //
  txt +=  (txt0.match('# ©\\w+')||'#') +  " don't forget to post your translation\r\n"  //
  txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt);
+ a.click()  //
  }
-}
 
 function get(){
- a.download=sel.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')
- a.click()
+ a.download=(inp.value||'en')+(difftpl? '.diff.tpl':'.txt')  //sel.selectedOptions[0].text+(difftpl? '.diff.tpl':'.txt')
+ console.log(inp.value)
+ if(inp.value=='en') inp.value=''
+ if(![...document.querySelector('datalist').options].some(x => x.value == inp.value)) {alert('Not found!');inp.value=''; return}  //do the test here optional
+ if(inp.value) fetch('https://raw.githubusercontent.com/dj0001/hfs-template/master/addons/languages/default/'+inp.value+'.txt').then(res => {if(!res.ok) {alert('not found!');inp.value=''; throw Error('404'); return false}; return res.text()})
+   .then(txt => {txt0=txt; make()});  else {txt0=tx0; make()}
+ //a.click()
 }
 
+
 document.querySelector('#button').oncontextmenu=function(){difftpl=!difftpl; this.title=difftpl?'.diff.tpl':'.txt' ; return false}
-function sendFiles(files) { const reader = new FileReader(); reader.onload = function(){tx0=this.result; sel.selectedIndex=0; sel.onchange(); button.focus(); sel[0].text=files[0].name.slice(0,2)};  reader.readAsText(files[0]) }  //test
+function sendFiles(files) { const reader = new FileReader(); reader.onload = function(){tx0=this.result; button.focus(); inp.value=''};  reader.readAsText(files[0]) }  //test
 </script>
