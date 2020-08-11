@@ -9,7 +9,7 @@ b.forEach(item => {
  vid.style='object-fit:scale-down'  //cover
  vid.height='64'; vid.width='64'  ;vid.loading='lazy'
  vid.alt='nothumb'
- vid.src=item.href+'?mode=thumb';
+ vid.src=item.href+'?mode=thumb';  //item.href.replace(/(.*\/)(.*)/,'$1thumb/$2')
  let ref=item.parentNode
  ref=ref.parentNode  //uncommend for takeback
  ref.prepend(vid)
