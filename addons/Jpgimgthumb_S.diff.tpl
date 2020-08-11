@@ -1,5 +1,6 @@
 [+]
 <script>
+var fullimgth=0  //edit here
 var thumbsize=0  //mobillightV5
 
 function imgth(){
@@ -9,7 +10,7 @@ b.forEach(item => {
  vid.style='object-fit:scale-down'  //cover
  vid.height='64'; vid.width='64'  ;vid.loading='lazy'
  vid.alt='nothumb'
- vid.src=item.href+'?mode=thumb';  //item.href.replace(/(.*\/)(.*)/,'$1thumb/$2')
+ vid.src=item.href+(fullimgth?'':'?mode=thumb');  //item.href.replace(/(.*\/)(.*)/,'$1thumb/$2')
  let ref=item.parentNode
  ref=ref.parentNode  //uncommend for takeback
  ref.prepend(vid)
