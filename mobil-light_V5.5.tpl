@@ -3,7 +3,7 @@
 <head>
 <meta charset=UTF-8 />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="5.5.10"/>
+<meta name="version" content="5.5.11"/>
 <meta name="Description" content="mobillight">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
@@ -99,7 +99,7 @@ li, aside {scroll-snap-align: start}
 <main id='files'><ul></ul></main>
 
 <script>
-const filemask='index.htm'; var thumbsize=64, tn=/\.jpg|\.png|\.gif/, reload=false, target='l', ondemand=false  //edit here |\/
+const filemask='index.htm'; var thumbsize=64, tn=/\.jpg|\.png|\.gif/, reload=false, target='l', ondemand=false, jpgimgth=true  //edit here |\/
 const qs=['thumbsize','target'];qs.forEach(q => window[q]=urlvar(q)||window[q]); if(ondemand) {thsize0=thumbsize; thumbsize=0}
 var folder=location.pathname.match(/.*\//)[0], b, evt=new Event('render')
 
@@ -139,7 +139,7 @@ return b
 function render(a){ const th=a.some(o => o.url=='thumb/'), la=(navigator.connection||{}).type!="cellular" && 'loading' in HTMLImageElement.prototype  //&&false
 var myTemplate=a.map(function(item) {
  return "<li>"+
- (thumbsize && (th||la||folder.endsWith("/thumb/")) && tn.test(item.url)? "<img src='"+folder+(th&&!document.body.classList.contains("gri")?"thumb/":"")+item.url+"' alt='thumb' loading='lazy' height='"+thumbsize+"' width='"+thumbsize+"'>":"")+
+ (thumbsize && (th||la||folder.endsWith("/thumb/")) && tn.test(item.url)? "<img src='"+folder+(th&&!document.body.classList.contains("gri")?"thumb/"+item.url:item.url+(jpgimgth&&item.url.endsWith('jpg')&&!document.body.classList.contains("gri")?'?mode=thumb':''))+"' alt='thumb' loading='lazy' height='"+thumbsize+"' width='"+thumbsize+"'>":"")+
  "<div><a "+(item.access?'':'class=notaccess ')+"href=\'"+(item.url.slice(-1)=='/'?item.url+"\'":(item.url.match('://')?'':folder)+item.url+"\' target='"+target+"'")+">"+decodeURI(item.url).replace(/\/$/,'')+
  "</a><span>"+item.size+"</span><span> "+item.modified+"</span></div></li>"
 
