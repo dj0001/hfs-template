@@ -139,7 +139,7 @@ return b
 function render(a){ const th=a.some(o => o.url=='thumb/'), la=(navigator.connection||{}).type!="cellular" && 'loading' in HTMLImageElement.prototype  //&&false
 var myTemplate=a.map(function(item) {
  return "<li>"+
- (thumbsize && (th||la||folder.endsWith("/thumb/")) && tn.test(item.url)? "<img src='"+folder+(th&&!document.body.classList.contains("gri")?"thumb/"+item.url:item.url+(jpgimgth&&item.url.endsWith('jpg')&&!document.body.classList.contains("gri")?'?mode=thumb':''))+"' alt='thumb' loading='lazy' height='"+thumbsize+"' width='"+thumbsize+"'>":"")+
+ (thumbsize && (th||la||folder.endsWith("/thumb/")) && tn.test(item.url)? "<img src='"+folder+(th&&!document.body.classList.contains("gri")?"thumb/"+item.url:item.url+(jpgimgth&&item.url.endsWith('jpg')&&!document.body.classList.contains("gri")&&!folder.endsWith("/thumb/")?'?mode=thumb':''))+"' alt='thumb' loading='lazy' height='"+thumbsize+"' width='"+thumbsize+"'>":"")+
  "<div><a "+(item.access?'':'class=notaccess ')+"href=\'"+(item.url.slice(-1)=='/'?item.url+"\'":(item.url.match('://')?'':folder)+item.url+"\' target='"+target+"'")+">"+decodeURI(item.url).replace(/\/$/,'')+
  "</a><span>"+item.size+"</span><span> "+item.modified+"</span></div></li>"
 
