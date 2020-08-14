@@ -12,7 +12,7 @@ b.forEach(item => {
  vid.alt='nothumb'
  vid.src=item.href+(fullimgth?'':'?mode=thumb');  //item.href.replace(/(.*\/)(.*)/,'$1thumb/$2')
  let ref=item.parentNode
- ref=ref.parentNode  //uncommend for takeback
+ ref=ref.parentNode  //uncommend for takeback (and hfs2.4)
  ref.prepend(vid)
  })
 
