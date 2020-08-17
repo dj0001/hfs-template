@@ -4,7 +4,7 @@ var jpgimgth=true  //edit here
 var thumbsize=0  //mobillightV5
 
 function imgth(){
-let b=document.querySelectorAll('a[href$=".jpg"]')
+let b=document.querySelectorAll('a[href$=".jpg"]')  //'a[href*="IMG_"][href$=".jpg"]'
 b.forEach(item => {
  var vid=document.createElement("img")
  vid.style='object-fit:scale-down'  //cover
