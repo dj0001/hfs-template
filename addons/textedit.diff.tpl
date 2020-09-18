@@ -6,13 +6,19 @@ if(!e.target.href||(!e.target.href.endsWith('.txt')&&!e.target.href.endsWith(ext
 if(e.target.parentNode.parentNode.lastChild.tagName=='TEXTAREA') return;
 e.preventDefault()  //
 var el=document.createElement('textarea')
-fetch(e.target.href,{cache:"no-cache"}).then(res => {e.target.title=res.headers.get('Last-Modified'); res.text().then(txt => {el.value=txt; el.disabled=upload.disabled; if(txt.startsWith('http')) e.target.href=txt})})  //always UTF-8
+fetch(e.target.href,{cache:"no-cache"}).then(res => {
+ res.text() .then(txt => {el.value=txt; el.disabled=upload.disabled; if(txt.startsWith('http')) e.target.href=txt})  //always UTF-8
+ el.onchange=function(){
+ fetch(e.target.href,{cache:"no-cache",method:'HEAD'}).then(resp => {
+ if(resp.headers.get('Last-Modified')==res.headers.get('Last-Modified'))  //
+ newtxt(el.value,e.target.text)
+ })
+ };  //editor
+})
 el.style.width='100%'
 e.target.parentNode.parentNode.style.display='block'
 //e.target.parentNode.style.display='none'
 e.target.parentNode.parentNode.append(el)
-
-el.onchange=function(){fetch(e.target.href,{cache:"no-cache",method:'HEAD'}).then(res => {if(res.headers.get('Last-Modified')==e.target.title) newtxt(el.value,e.target.text); else console.log('another user has changed the file')})}  //editor
 
 })
 
