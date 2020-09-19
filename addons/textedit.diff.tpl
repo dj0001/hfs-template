@@ -12,7 +12,7 @@ fetch(e.target.href,{cache:"no-cache"}).then(res => {
  fetch(e.target.href,{cache:"no-cache",method:'HEAD'}).then(resp => {
  if(resp.headers.get('Last-Modified')==res.headers.get('Last-Modified'))  //
  newtxt(el.value,e.target.text);
- else {fetch(e.target.href,{cache:"no-cache"}).then(resp => {resp.text().then(txt => newtxt(el.value.match(/.*/)[0]+'\n'+txt,e.target.text) )}) }  //prepend first line
+ else {fetch(e.target.href,{cache:"no-cache"}).then(resp => {resp.text().then(txt => newtxt(el.value.match(/.*/)[0]+'\n'+txt,e.target.text) )}) }  //add first (.*$ last) line
  })
  };  //editor
 })
@@ -24,6 +24,7 @@ e.target.parentNode.parentNode.append(el)
 })
 
 function newtxt(txt,name){
+ //txt=txt.replace(/^:/,'%timestamp% %user%:')  //: groupchat
  var fd = new FormData(), item = new Blob([txt],{type:'text/plain'})
  fd.append('myFile', item, name)
  fetch(folder,{method:'POST',body:fd}).then(response => get(folder));
