@@ -11,7 +11,8 @@ fetch(e.target.href,{cache:"no-cache"}).then(res => {
  el.onchange=function(){
  fetch(e.target.href,{cache:"no-cache",method:'HEAD'}).then(resp => {
  if(resp.headers.get('Last-Modified')==res.headers.get('Last-Modified'))  //
- newtxt(el.value,e.target.text)
+ newtxt(el.value,e.target.text);
+ else {fetch(e.target.href,{cache:"no-cache"}).then(resp => {resp.text().then(txt => newtxt(el.value.match(/.*/)[0]+'\n'+txt,e.target.text) )}) }  //prepend first line
  })
  };  //editor
 })
