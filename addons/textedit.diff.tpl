@@ -1,6 +1,9 @@
 [+]
 <script>  //txtedit  disable Numberfiles
-var t, ext='.comment', inv=5  //edit here '.m3u'; inv in min
+var t,t0, ext='.comment', inv=5  //edit here '.m3u'; inv in min
+if(navigator.setAppBadge) navigator.clearAppBadge()  //chrome add to homescreen
+function badge(r) {let tmp=r;if(tmp!=t0) if(navigator.setAppBadge) navigator.setAppBadge(); else document.title='HFS %version% ◎';t0=tmp}
+
 document.querySelector('#files').addEventListener('click', function(e){
 if(!e.target.href||(!e.target.href.endsWith('.txt')&&!e.target.href.endsWith(ext))) return;  //disable single commentfile
 if(e.target.parentNode.parentNode.lastChild.tagName=='TEXTAREA') return;
@@ -9,7 +12,7 @@ var el=document.createElement('textarea')
 fetch(e.target.href,{cache:"no-cache"}).then(res => {
  res.text() .then(txt => {el.value=txt; el.disabled=upload.disabled; if(txt.startsWith('http')) e.target.href=txt; 
  if(e.target.text.endsWith('.gb.txt')) {el.value=':\n'
-  +el.value; clearTimeout(t);t=setInterval(function(){ if(el!=document.activeElement) fetch(e.target.href,{cache:"no-cache"}).then(res => res.text() .then(txt => el.value=':\n'+txt)) }, inv*60000)  //
+  +el.value; t0=res.headers.get('Last-Modified');clearTimeout(t);t=setInterval(function(){ if(el!=document.activeElement) fetch(e.target.href,{cache:"no-cache"}).then(res => {res.text() .then(txt => el.value=':\n'+txt);badge(res.headers.get('Last-Modified'))}) }, inv*60000)  //
   el.setSelectionRange(1,1);el.focus()};  //
    })  //always UTF-8
  el.onchange=function(){
