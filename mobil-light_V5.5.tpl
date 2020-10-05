@@ -27,7 +27,7 @@ a[href$=".mp3"]::before, a[href$=".ogg"]::before {content:"🎧  "}
 a[href$=".jpg"]::before {content:"🌄"}
 img+div a[href$=".jpg"]::before {content:""}
 a[href$=".mp4"]::before {content:"🎞  "} /*🎬*/
-a[href*="://"]::before, a[href$=".htm"]::before  {content:"🌎  "} /*🔗*/
+a[href*="://"]::before, a[href$=".htm"]::before, a[href$=".URL"]::before {content:"🌎  "} /*🔗*/
 a[href$=".comment"]::before {content:"💬  "}
 a[href*=".txt"]::before {content:"📝  "}
 
