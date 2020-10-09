@@ -9,7 +9,7 @@ if(e.target.parentNode.parentNode.lastChild.isContentEditable) return;
 e.preventDefault()  //
 var el=document.createElement('div')
 fetch(e.target.href,{cache:"no-cache"}).then(res => {
- res.text() .then(txt => {el.innerHTML=txt; if(txt.startsWith('http')) e.target.href=txt})  //always UTF-8  ; el.disabled=upload.disabled
+ res.text() .then(txt => {el.innerHTML=txt.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/&lt;br&gt;/g,'\n').replace(/&lt;(\/)?([bisu])&gt;/g,'<$1$2>'); if(txt.startsWith('http')) e.target.href=txt})  //<b>x</b>  //prevent xss
  el.onblur=function(){
  fetch(e.target.href,{cache:"no-cache",method:'HEAD'}).then(resp => {
  if(resp.headers.get('Last-Modified')==res.headers.get('Last-Modified'))  //
@@ -21,15 +21,16 @@ el.onkeydown=function(e){if(!document.getSelection().toString()) return;  let cn
 })
 el.style='width:100%; resize:both; overflow:auto; white-space:pre; border:1px solid gray; display:block'
 el.setAttribute('contenteditable','true')  //if(%user%')   //if(!upload.disabled)
+document.execCommand("defaultParagraphSeparator", false, "br")  //
 e.target.parentNode.parentNode.style.display='block'
 //e.target.parentNode.style.display='none'
 e.target.parentNode.parentNode.append(el)
 })
 function newtxt(txt,name){
  //txt=txt.replace(/^:/,'%timestamp% %user%:')  //: groupchat
- //txt=txt.replace('<3','❤').replace(':)','☺').replace(':(','☹')
- txt=txt.replace(/(?<!")(https?:\/\/)([^ <]+)/g,'<a href="$1$2">$2<\/a>')
- txt=txt.replace(/&lt;(\/)?([bisu])&gt;/g,'<$1$2>')  //<b>x</b>
+ txt=txt.replace('<3','❤').replace(':)','☺').replace(':(','☹')
+ //txt=txt.replace(/(?<!")(https?:\/\/)([^ <]+)/g,'<a href="$1$2">$2<\/a>')
+ //txt=txt.replace(/&lt;(\/)?([bisu])&gt;/g,'<$1$2>')  //<b>x</b>
  var fd = new FormData(), item = new Blob([txt],{type:'text/plain'})
  fd.append('myFile', item, name)
  fetch(folder,{method:'POST',body:fd}).then(response => get(folder));
