@@ -9,7 +9,8 @@ if(e.target.parentNode.parentNode.lastChild.isContentEditable) return;
 e.preventDefault()  //
 var el=document.createElement('div')
 fetch(e.target.href,{cache:"no-cache"}).then(res => {
- res.text() .then(txt => {el.innerHTML=txt.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/&lt;br&gt;/g,'\n').replace(/&lt;(\/)?([bisu])&gt;/g,'<$1$2>'); if(txt.startsWith('http')) e.target.href=txt})  //<b>x</b>  //prevent xss
+ res.text() .then(txt => {el.innerHTML=txt.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/&lt;br&gt;/g,'\n').replace(/&lt;(\/)?([bisu])&gt;/g,'<$1$2>').replace(/&lt;(\/)?(font|span)(.*?)?&gt;/g,'<$1$2$3>');  //prevent xss
+  if(txt.startsWith('http')) e.target.href=txt})  //<b>x</b>
  el.onblur=function(){
  fetch(e.target.href,{cache:"no-cache",method:'HEAD'}).then(resp => {
  if(resp.headers.get('Last-Modified')==res.headers.get('Last-Modified'))  //
