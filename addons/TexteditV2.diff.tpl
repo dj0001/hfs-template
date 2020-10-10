@@ -32,6 +32,7 @@ function newtxt(txt,name){
  txt=txt.replace('<3','❤').replace(':)','☺').replace(':(','☹')
  //txt=txt.replace(/(?<!")(https?:\/\/)([^ <]+)/g,'<a href="$1$2">$2<\/a>')
  //txt=txt.replace(/&lt;(\/)?([bisu])&gt;/g,'<$1$2>')  //<b>x</b>
+ txt=txt.replace(/&amp;/g,'&')  //.replace(/&lt;/g,'<').replace(/&gt;/g,'>')
  var fd = new FormData(), item = new Blob([txt],{type:'text/plain'})
  fd.append('myFile', item, name)
  fetch(folder,{method:'POST',body:fd}).then(response => get(folder));
