@@ -1,7 +1,7 @@
 [+]
 <script>  //txteditV2  disable Numberfiles
 var ext='.comment'  //edit here '.m3u'
-var folder,get; folder=folder||%folder%; get=get||function(){location.reload()}  //hfs2.4, takeback
+var folder,get; folder=folder||'%folder%'; get=get||function(){location.reload()}  //hfs2.4, takeback
 
 document.querySelector('#files').addEventListener('click', function(e){
 if(!e.target.href||(!e.target.href.endsWith('.txt')&&!e.target.href.endsWith(ext))) return;  //disable single commentfile
