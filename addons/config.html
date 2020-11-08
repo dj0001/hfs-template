@@ -3,7 +3,7 @@ Default sort <select >
   <option value="e">Ext</option>
   <option value="s">Size</option>
   <option value="t">Date</option>
-</select>
+</select><label for=i5 title='&darr;'> desc</label><input type="checkbox" id='i5'>
 
 <br>Thumbsize <br><input type="range" value="64" max="256" step="64" title='64&#xa;0-256'  style='width:256px' onchange="this.title=this.value;sm()">
 
@@ -32,6 +32,6 @@ lng.value=navigator.language.split('-')[0]  //
 
 const $ = document.querySelector.bind(document); $('button').onclick=get
 
-function get() {location = sa.value +'/?sort='+$('select').value +'&'+$('small').textContent.replace(/, /g,'&') +'&lang='+lng.value}
+function get() {location = sa.value +'/?sort='+(i5.checked?'!':'')+$('select').value +'&'+$('small').textContent.replace(/, /g,'&') +'&lang='+lng.value}
 function sm() {$('small').textContent = 'thumbsize='+$('input').value +', target='+(i3.checked?'L':'_self') +', ondemand='+i4.checked}; sm();
 </script>
