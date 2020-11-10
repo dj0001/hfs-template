@@ -36,8 +36,7 @@ function get() {location = sa.value +'/?sort='+(i5.checked?'!':'')+$('select').v
 function sm() {$('small').textContent = 'thumbsize='+$('input').value +', target='+(i3.checked?'L':'_self') +', ondemand='+i4.checked}; sm();
 
 //i18n lite
-function translate(w) {var tmp=[...(document.querySelectorAll('*'))].find(v => v.textContent==w); if(tmp) tmp.textContent=_(w)}
 function _(i18,lang) { lang=lang||navigator.language.split('-')[0];  return locales[lang]?locales[lang][locales.en.indexOf(i18)]:i18 }
-var locales={en:['Name','Ext','Size','Date'], de:['Name','Ext','Größe','Datum']}; //edit here
-locales['en'].forEach(v => translate(v))
+var locales={en:['Name','Ext','Size','Date',' desc'], de:['Name','Ext','Größe','Datum',' absteigend']}; //edit here
+[...(document.querySelectorAll('*'))].forEach(v => {if(locales['en'].includes(v.textContent)) v.textContent=_(v.textContent)})
 </script>
