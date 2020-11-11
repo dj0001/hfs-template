@@ -1,11 +1,11 @@
-Default sort <select >
+<span>Default sort </span><select >
   <option value="n">Name</option>
   <option value="e">Ext</option>
   <option value="s">Size</option>
   <option value="t">Date</option>
 </select><label for=i5 title='&darr;'> desc</label><input type="checkbox" id='i5'>
 
-<br>Thumbsize <br><input type="range" value="64" max="256" step="64" title='64&#xa;0-256'  style='width:256px' onchange="this.title=this.value;sm()">
+<div>Thumbsize </div><input type="range" value="64" max="256" step="64" title='64&#xa;0-256'  style='width:256px' onchange="this.title=this.value;sm()">
 
 <br><label for=i3 title='target'>Open files in new tab </label><input type="checkbox" checked id='i3' onchange='sm()'>
 <br><label for=i4 title="*admin add 'ondemand' to qs">Ondemand thumbs* </label><input type="checkbox" checked id='i4' onchange='sm()'>
@@ -38,7 +38,7 @@ function sm() {$('small').textContent = 'thumbsize='+$('input').value +', target
 //i18n lite
 function _(i18,lang) { lang=lang||navigator.language.split('-')[0];  return locales[lang]?locales[lang][locales.en.indexOf(i18)]:i18 }
 var locales={
- en:['Name','Ext','Size' ,'Date' ,' desc'],
- de:['Name','Ext','Größe','Datum',' absteigend']}; //edit here
+ en:['Default sort '  ,'Name','Ext','Size' ,'Date' ,' desc' ,'Thumbsize '],
+ de:['Standard Sort. ','Name','Ext','Größe','Datum',' abst.','Thumbgröße '] }; //edit here
 [...(document.querySelectorAll('*'))].forEach(v => {if(locales['en'].includes(v.textContent)) v.textContent=_(v.textContent)})
 </script>
