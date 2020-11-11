@@ -40,5 +40,5 @@ function _(i18,lang) { lang=lang||navigator.language.split('-')[0];  return loca
 var locales={
  en:['Default sort '  ,'Name','Ext','Size' ,'Date' ,' desc' ,'Thumbsize '],
  de:['Standard Sort. ','Name','Ext','Größe','Datum',' abst.','Thumbgröße '] }; //edit here
-[...(document.querySelectorAll('*'))].forEach(v => {if(locales['en'].includes(v.textContent)) v.textContent=_(v.textContent)})
+var lang=location.search.slice(1); [...(document.querySelectorAll('*'))].forEach(v => {if(locales['en'].includes(v.textContent)) v.textContent=_(v.textContent,lang)})  //?de
 </script>
