@@ -38,8 +38,8 @@ function sm() {$('small').textContent = 'thumbsize='+$('input').value +', target
 
 //i18n lite
 function _(i18,lng) { lng=lng||lang; return locales[lng]?locales[lng][i18]||locales[lng][locales.en.indexOf(i18)]:i18 }
-var locales={de:{"Default sort":"Standard Sort. ","Name":"Name","Ext":"Ext","Size":"Größe","Date":"Datum"," desc":" abst.","Thumbsize ":"Thumbgröße "}};  //edit here
-locales.es=["Default sort","Nombre","Ext","Tamaño","Fecna"," desc","Thumbsize "]  //
+var locales={de:{"Default sort ":"Standard Sort. ","Name":"Name","Ext":"Ext","Size":"Größe","Date":"Datum"," desc":" abst.","Thumbsize ":"Thumbgröße "}};  //edit here
+locales.es=["Default sort ","Nombre","Ext","Tamaño","Fecna"," desc","Thumbsize "]  //
 locales.en = locales.en || Object.keys(locales[Object.keys(locales)[0]]);
 var lang=''; lang=lang||navigator.language.split('-')[0]; [...(document.querySelectorAll('*'))].forEach(v => {if(locales['en'].includes(v.textContent)) v.textContent=_(v.textContent,lang)})
 </script>
