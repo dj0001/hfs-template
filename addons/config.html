@@ -1,9 +1,9 @@
 <meta charset=UTF-8 />
-<span>Default sort </span><select >
+<span>Sort by</span> <select >
   <option value="n">Name</option>
-  <option value="e">Ext</option>
+  <option value="e">Extension</option>
   <option value="s">Size</option>
-  <option value="t">Date</option>
+  <option value="t">Timestamp</option>
 </select><label for=i5 title='&darr;'> desc</label><input type="checkbox" id='i5'>
 
 <div>Thumbsize </div><input type="range" value="64" max="256" step="64" title='64&#xa;0-256'  style='width:256px' onchange="this.title=this.value;sm()">
@@ -36,11 +36,14 @@ const $ = document.querySelector.bind(document); $('button').onclick=get
 function get() {location = sa.value +'/?sort='+(i5.checked?'!':'')+$('select').value +'&'+$('small').textContent.replace(/, /g,'&') +'&lang='+lng.value}
 function sm() {$('small').textContent = 'thumbsize='+$('input').value +', target='+(i3.checked?'L':'_self') +', ondemand='+i4.checked}; sm();
 
-//function initojson(a) {return JSON.parse('{"'+a.replace(/^[[#].*\n?/gm,'').replace(/^\r?\n$|\n$/gm,'').replace(/=/g,'":"').replace(/\n/g,'","')+'"}')}  //i18n lite
+//i18n lite
 function _(i18,lng) { lng=lng||lang; return (locales[lng]?locales[lng][i18]||locales[lng][locales.en.indexOf(i18)]:i18)||i18 }
-var locales={de:{"Default sort ":"Standard Sort. ","Name":"Name","Ext":"Ext","Size":"Größe","Date":"Datum"," desc":" abst.","Thumbsize ":"Thumbgröße "}};  //edit here
-locales.es=["Default sort ","Nombre","Ext","Tamaño","Fecna"," desc","Thumbsize "]  //
+var locales={de:{"Sort by":"Standard Sort.","Name":"Name","Extension":"Ext","Size":"Größe","Timestamp":"Datum"," desc":" abst.","Thumbsize ":"Thumbgröße "}};  //edit here
+//locales.es=["Default sort ","Nombre","Ext","Tamaño","Fecna"," desc","Thumbsize "]  //
 locales.en = locales.en || Object.keys(locales[Object.keys(locales)[0]]);
 var lang=''; lang=lang||location.search.slice(1)||navigator.language.split('-')[0];  //?de
+ if(lang!='en') fetch('https://raw.githubusercontent.com/dj0001/hfs-template/master/addons/languages/default/'+lang+'.txt').then(res =>  {if(!res.ok) console.log(Error('404')); return res.text()}).then(data => {if(!data.startsWith('404')) locales[lang]=initojson(data);  //throw Error('404')  //
 [...(document.querySelectorAll('*'))].forEach(v => {if(locales['en'].includes(v.textContent)) v.textContent=_(v.textContent,lang)})
+ });  //
+ function initojson(a) {return JSON.parse('{"'+a.replace(/^[{[#].*\n?/gm,'').replace(/\r?\n$/gm,'').replace(/^\r?\n/,'').replace(/=/g,'":"').replace(/\r?\n/g,'","')+'"}')}  //
 </script>
