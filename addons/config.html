@@ -39,7 +39,7 @@ function sm() {$('small').textContent = 'thumbsize='+$('input').value +', target
 //i18n lite
 function _(i18,lng) { lng=lng||lang; return (locales[lng]?locales[lng][i18]||locales[lng][locales.en.indexOf(i18)]:i18)||i18 }
 var locales={de:{"Sort by":"Standard Sort.","Name":"Name","Extension":"Ext","Size":"Größe","Timestamp":"Datum"," desc":" abst.","Thumbsize ":"Thumbgröße "}};  //edit here
-//locales.es=["Default sort ","Nombre","Ext","Tamaño","Fecna"," desc","Thumbsize "]  //
+ locales.it=["Ordina per...","Nome","Tipo","Dimensione","Data"]  //
 locales.en = locales.en || Object.keys(locales[Object.keys(locales)[0]]);
 var lang=''; lang=lang||location.search.slice(1)||navigator.language.split('-')[0];  //?de
  if(lang!='en') fetch('https://raw.githubusercontent.com/dj0001/hfs-template/master/addons/languages/default/'+lang+'.txt').then(res =>  {if(!res.ok) console.log(Error('404')); return res.text()}).then(data => {if(!data.startsWith('404')) locales[lang]=initojson(data);  //throw Error('404')  //
