@@ -23,7 +23,7 @@
 <br><textarea id='ta' cols=50 rows=10  ondrop='sendFiles1(event.dataTransfer.files); return false'  ondragover="return false" placeholder='opt. drag your tpl here'></textarea>
 <br><button id='bta' >Download</button>
 
-<footer><br><small>30.07. Now you can also start with <a href='http://rejetto.com/forum/index.php?topic=5524.0'>RAWR Translations</a>. Drag and drop them to Upload.<br>08.08. add input<br>09.08. drag <a href='https://raw.githubusercontent.com/dj0001/hfs-template/master/addons/languages/de.txt'>link</a><br>16.11. GUI Ctrl+↓</small></footer>
+<footer><br><small>30.07. Now you can also start with <a href='http://rejetto.com/forum/index.php?topic=5524.0'>RAWR Translations</a>. Drag and drop them to Upload.<br>08.08. add input<br>09.08. drag <a href='https://raw.githubusercontent.com/dj0001/hfs-template/master/addons/languages/de.txt'>link</a><br>16.11. GUI Alt+↓</small></footer>
 
 <script>
 var difftpl=false  //edit here
@@ -85,7 +85,7 @@ function sendFiles(files) { const reader = new FileReader(); reader.onload = fun
 
 function meter(txt) {var m=document.querySelector('meter'); m.value=1-(txt.match(/=\r?\n/g)||[]).length/(txt.match(/\n/g).length-1); m.title=(m.value*100).toFixed()+'% translated'}
 
-ta.onkeydown=function(e){if(!e.ctrlKey) return; if(e.key!='ArrowDown') return; this.selectionStart=this.value.indexOf('=',this.selectionStart)+1; meter(ta.value); return false}
+ta.onkeydown=function(e){if(!e.ctrlKey) return; if(e.key!='ArrowDown') return; this.selectionStart=this.value.indexOf('='+(e.shiftKey?'\n':''),this.selectionStart)+1; meter(ta.value); return false}
 bta.onclick=function(){txt=new Blob([ta.value],{type:'text/plain'}); a.href=URL.createObjectURL(txt);a.click()}
 function sendFiles1(files) { const reader = new FileReader(); reader.onload = function(){var lng=this.result.match(/{\.!.+?\.}/g); uniq = [...new Set(lng)]; button.click()};  reader.readAsText(files[0]) }
 </script>
