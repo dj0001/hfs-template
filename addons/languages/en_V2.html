@@ -61,7 +61,7 @@ function make(){
  if(location.search) txt=txt.replace('#=','\r\n#following hfs2.3only')  //HFS2.3
  console.log((txt.match(/=\r\n/g)||[]).length+'('+(txt.match(/\n/g).length-1)+') not translated')  //
  //document.querySelector('meter').value=1-(txt.match(/=\r\n/g)||[]).length/(txt.match(/\n/g).length-1); document.querySelector('meter').title=parseInt(document.querySelector('meter').value*100)+'% translated'  //
- var m=document.querySelector('meter'); m.value=1-(txt.match(/=\r\n/g)||[]).length/(txt.match(/\n/g).length-1); m.title=(m.value*100).toFixed()+'% translated'  //
+ meter(txt)  //
  txt=txt.replace(/(max s dl msg=)\r\n/,'$1There is a limit on the number of simultaneous downloads on this server\r\n')  //
  txt +=  (txt0.match('# ©\\w+')||'#') +  " don't forget to post your translation\r\n"  //
  //txt=new Blob([txt],{type:'text/plain'}); a.href=URL.createObjectURL(txt);
@@ -83,7 +83,9 @@ function get(){
 document.querySelector('#button').oncontextmenu=function(){difftpl=!difftpl; this.title=difftpl?'.diff.tpl':'.txt' ; return false}
 function sendFiles(files) { const reader = new FileReader(); reader.onload = function(){tx0=this.result; button.focus(); inp.value=''};  reader.readAsText(files[0]) }  //test
 
-ta.onkeydown=function(e){if(!e.ctrlKey) return; if(e.key!='ArrowDown') return; this.selectionStart=this.value.indexOf('=',this.selectionStart)+1; return false}
+function meter(txt) {var m=document.querySelector('meter'); m.value=1-(txt.match(/=\r?\n/g)||[]).length/(txt.match(/\n/g).length-1); m.title=(m.value*100).toFixed()+'% translated'}
+
+ta.onkeydown=function(e){if(!e.ctrlKey) return; if(e.key!='ArrowDown') return; this.selectionStart=this.value.indexOf('=',this.selectionStart)+1; meter(ta.value); return false}
 bta.onclick=function(){txt=new Blob([ta.value],{type:'text/plain'}); a.href=URL.createObjectURL(txt);a.click()}
 function sendFiles1(files) { const reader = new FileReader(); reader.onload = function(){var lng=this.result.match(/{\.!.+?\.}/g); uniq = [...new Set(lng)]; button.click()};  reader.readAsText(files[0]) }
 </script>
