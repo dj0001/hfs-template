@@ -20,7 +20,7 @@
 &nbsp;<a href='http://rejetto.com/forum/index.php?topic=13313.0' title='Post on the forum' ondrop="event.preventDefault();var url=event.dataTransfer.getData('Text');if(url) fetch(url).then(res => res.text()).then(txt => tx0=txt); else sendFiles(event.dataTransfer.files)" ondragover="return false">Upload</a>
 <meter title='translated/total'></meter>
 
-<br><textarea id='ta' cols=50 rows=10  ondrop='sendFiles1(event.dataTransfer.files)'  ondragover="return false" placeholder='opt. drag your tpl here'></textarea>
+<br><textarea id='ta' cols=50 rows=10  ondrop='sendFiles1(event.dataTransfer.files); return false'  ondragover="return false" placeholder='opt. drag your tpl here'></textarea>
 <br><button id='bta' >Download</button>
 
 <footer><br><small>30.07. Now you can also start with <a href='http://rejetto.com/forum/index.php?topic=5524.0'>RAWR Translations</a>. Drag and drop them to Upload.<br>08.08. add input<br>09.08. drag <a href='https://raw.githubusercontent.com/dj0001/hfs-template/master/addons/languages/de.txt'>link</a><br>16.11. GUI Ctrl+↓</small></footer>
