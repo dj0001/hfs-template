@@ -45,5 +45,6 @@ var lang=''; lang=lang||location.search.slice(1)||navigator.language.split('-')[
  if(lang!='en') fetch('https://raw.githubusercontent.com/dj0001/hfs-template/master/addons/languages/default/'+lang+'.txt').then(res =>  {if(!res.ok) console.log(Error('404')); return res.text()}).then(data => {if(!data.startsWith('404')) locales[lang]=initojson(data);  //throw Error('404')  //
 [...(document.querySelectorAll('*'))].forEach(v => {if(locales['en'].includes(v.textContent)) v.textContent=_(v.textContent,lang)})
  });  //
- function initojson(a) {return JSON.parse('{"'+a.replace(/^[{[#].*\n?/gm,'').replace(/\r?\n$/gm,'').replace(/^\r?\n/,'').replace(/=/g,'":"').replace(/\r?\n/g,'","')+'"}')}  //
+ //function initojson(a) {return JSON.parse('{"'+a.replace(/^[{[#].*\n?/gm,'').replace(/\r?\n$/gm,'').replace(/^\r?\n/,'').replace(/=/g,'":"').replace(/\r?\n/g,'","')+'"}')}  //
+ function initojson(a) { return Object.fromEntries([...a.matchAll(/(.+)=(.+)/g)].map(x => x.slice(1))) }  //
 </script>
