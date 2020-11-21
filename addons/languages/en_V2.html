@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Download language file</title><meta name="Description" content="Post your translation on the forum">
 <link rel="icon" sizes="192x192" href="https://dj0001.github.io/hfs-template/icon.png">
@@ -88,5 +90,5 @@ function meter(txt) {var m=document.querySelector('meter'); m.value=1-(txt.match
 ta.onkeydown=function(e){if(!e.altKey) return; if(e.key!='ArrowDown') return; this.selectionStart=this.value.indexOf('='+(e.shiftKey?'\n':''),this.selectionStart)+1; meter(ta.value); return false}
 bta.onclick=function(){txt=new Blob([ta.value],{type:'text/plain'}); a.href=URL.createObjectURL(txt);a.click()}
 function sendFiles1(files) { const reader = new FileReader(); reader.onload = function(){if(files[0].name.endsWith('.tpl')) {var lng=this.result.match(/{\.!.+?\.}/g); uniq = [...new Set(lng)]; button.click()} else ta.value=this.result};  reader.readAsText(files[0]) }
-window.onunload=function(){localStorage.text=ta.value.match(/.+=/)?ta.value:''}; ta.value=localStorage.text||''  //
+window.onpagehide=function(){localStorage.text=ta.value.match(/.+=/)?ta.value:''}; ta.value=localStorage.text||''  //
 </script>
