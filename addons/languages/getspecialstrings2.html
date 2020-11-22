@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Get [^special:strings] for template V2</title>
+	<style>
+		body {
+			text-align: center;
+			font-size: 1.08em;
+			font-family: 'Cambria', 'Cochin', 'Georgia', 'Times', 'Times New Roman', serif;
+		}
+		textarea.content {
+			width: 32em;
+			height: 16em;
+		}
+	</style>
+</head>
+<body>
+	<h1>Get [^special:strings] for template</h1>
+	<h2>== Select your template file ==</h2>
+	<input type="file" id="template" onchange="readfile(event);" accept='.tpl' /><br />
+	<h2>== Results <meter title='translated/total'></meter></h2>
+	<textarea spellcheck="false" class="content" id="languagecontent" placeholder='try querstring ?es'></textarea><br />
+	<button onclick="download();">Download as file</button>
+	<a hidden id="dummylink"></a>
+	<script>
+		function getlng(filecontent) {
+			var tpl = filecontent;
+			var lng = tpl.match(/{\.!.+?\.}/g);
+			uniq = [...new Set(lng)];  //var 
+			make()
+			template.accept='.tpl,.txt'
+			languagecontent.select();
+		}
+		function readfile(event) {
+			// Reference: https://www.cnblogs.com/keatkeat/p/4172875.html
+			var reader = new FileReader();
+			reader.onload = function(event1) {
+				//console.log(event1);
+				var filecontent = event1.target.result  //atob(event1.target.result.slice(37));
+				if(event.target.files[0].name.match(/(?<!\.diff)\.tpl$/)) getlng(filecontent); else make(filecontent)
+			}
+			reader.readAsText(event.target.files[0])  //reader.readAsDataURL(event.target.files[0]);
+		}
+		function download() {
+			const fname = '.tpl.en.txt'  //edit here '.diff.tpl' '.strings.txt'
+			var lng = languagecontent.value;
+			var file = new Blob([lng]);  //, {type: 'application/octet-stream'}
+			dummylink.download = (template.files[0]||{name:location.search.slice(1)+'.txt'}).name.replace(/(?<!\.diff)\.tpl$/,fname)
+			dummylink.href = URL.createObjectURL(file);
+			dummylink.click();
+		}
+
+
+var uniq
+function make(txt0) { txt0=txt0||''
+ var txt =  '[^special:strings]\r\n'  //[+special:strings]
+ if(!uniq) {languagecontent.value = txt0; return}  //
+ uniq.forEach(it => { it=it.slice(3,-2);var patt=new RegExp('^(?:lv_)?'+it+'=(.+)','mi'); txt += it+'='+(txt0.match(patt)||[,''])[1]+'\r\n' })
+ txt=txt.replace('{.if|{.length|{.?search=','No results=\nNo files=').replace('%reason%=','File name or extension forbidden..=').replace(/option.+\r?\n/g,'')  //HFS2.4
+ languagecontent.value = txt; meter(txt)
+}
+languagecontent.onkeydown=function(e){if(!e.altKey) return; if(e.key!='ArrowDown') return; this.selectionStart=this.value.indexOf('='+(e.shiftKey?'\n':''),this.selectionStart)+1; meter(this.value); return false}  //Alt+↓
+function meter(txt) {var m=document.querySelector('meter'); m.value=(txt.match(/=.+/g)||[]).length/txt.match(/=/g).length; m.title=(m.value*100).toFixed()+'%/'+txt.match(/=/g).length+' translated'}
+if(location.search)   //?es
+ fetch('https://raw.githubusercontent.com/rejetto/hfs2/master/default.tpl').then(res => res.text()).then(txt => {getlng(txt);
+ fetch('https://raw.githubusercontent.com/dj0001/hfs-template/master/addons/languages/default/'+location.search.slice(1)+'.txt').then(res => res.text()).then(txt => make(txt))
+})
+	</script>
+</body>
+</html>
