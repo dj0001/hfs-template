@@ -21,7 +21,7 @@
 <body>
 	<h1>Get [^special:strings] for template</h1>
 	<h2>== Select your template file ==</h2>
-	<input type="file" id="template" onchange="for(const file of this.files) {readfile(file)}" accept='.tpl,.txt' /><br />
+	<input type="file" id="template" onchange="for(const file of this.files) {readfile(file)}" accept='.tpl,.txt' multiple /><br />
 	<h2>== Results <meter title='translated/total'></meter></h2>
 	<textarea spellcheck="false" class="content" id="languagecontent" placeholder='try querstring ?es'></textarea><br />
 	<button onclick="download();">Download as file</button>
