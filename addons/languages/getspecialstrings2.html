@@ -21,7 +21,7 @@
 <body>
 	<h1>Get [^special:strings] for template</h1>
 	<h2>== Select your template file ==</h2>
-	<input type="file" id="template" onchange="readfile(event);" accept='.tpl' /><br />
+	<input type="file" id="template" onchange="for(const file of this.files) {readfile(file)}" accept='.tpl,.txt' /><br />
 	<h2>== Results <meter title='translated/total'></meter></h2>
 	<textarea spellcheck="false" class="content" id="languagecontent" placeholder='try querstring ?es'></textarea><br />
 	<button onclick="download();">Download as file</button>
@@ -32,18 +32,15 @@
 			var lng = tpl.match(/{\.!.+?\.}/g);
 			uniq = [...new Set(lng)];  //var 
 			make()
-			template.accept='.tpl,.txt'
 			languagecontent.select();
 		}
-		function readfile(event) {
-			// Reference: https://www.cnblogs.com/keatkeat/p/4172875.html
+		function readfile(file) {
 			var reader = new FileReader();
-			reader.onload = function(event1) {
-				//console.log(event1);
-				var filecontent = event1.target.result  //atob(event1.target.result.slice(37));
-				if(event.target.files[0].name.match(/(?<!\.diff)\.tpl$/)) getlng(filecontent); else make(filecontent)
+			reader.onload = function() {
+				var filecontent = this.result
+				if(file.name.match(/(?<!\.diff)\.tpl$/)) getlng(filecontent); else make(filecontent)
 			}
-			reader.readAsText(event.target.files[0])  //reader.readAsDataURL(event.target.files[0]);
+			reader.readAsText(file)
 		}
 		function download() {
 			const fname = '.tpl.en.txt'  //edit here '.diff.tpl' '.strings.txt'
@@ -55,8 +52,8 @@
 		}
 
 
-var uniq
-function make(txt0) { txt0=txt0||''
+var uniq, txt0=''
+function make(tx0) { txt0=tx0||txt0
  var txt =  '[^special:strings]\r\n'  //[+special:strings]
  if(!uniq) {languagecontent.value = txt0; return}  //
  uniq.forEach(it => { it=it.slice(3,-2);var patt=new RegExp('^(?:lv_)?'+it+'=(.+)','mi'); txt += it+'='+(txt0.match(patt)||[,''])[1]+'\r\n' })
