@@ -46,7 +46,7 @@
 			const fname = '.tpl.en.txt'  //edit here '.diff.tpl' '.strings.txt'
 			var lng = languagecontent.value;
 			var file = new Blob([lng]);  //, {type: 'application/octet-stream'}
-			dummylink.download = (template.files[0]||{name:location.search.slice(1)+'.txt'}).name.replace(/(?<!\.diff)\.tpl$/,fname)
+			dummylink.download = (template.files[template.files.length-1]||{name:location.search.slice(1)+'.txt'}).name.replace(/(?<!\.diff)\.tpl$/,fname)
 			dummylink.href = URL.createObjectURL(file);
 			dummylink.click();
 		}
@@ -62,7 +62,7 @@ function make(tx0) { txt0=tx0||txt0
  languagecontent.value = txt; meter(txt)
 }
 languagecontent.onkeydown=function(e){if(!e.altKey) return; if(e.key!='ArrowDown') return; this.selectionStart=this.value.indexOf('='+(e.shiftKey?'\n':''),this.selectionStart)+1; meter(this.value); return false}  //Alt+↓
-function meter(txt) {var m=document.querySelector('meter'); m.value=(txt.match(/=.+/g)||[]).length/txt.match(/=/g).length; m.title=(m.value*100).toFixed()+'%/'+txt.match(/=/g).length+' translated'}
+function meter(txt) {var m=document.querySelector('meter'), tot=(txt.match(/=/g)||[]).length; m.value=(txt.match(/=.+/g)||[]).length/tot||0; m.title=(m.value*100).toFixed()+'%/'+tot+' translated'}
 if(/^\?[a-z]{2}$/i.test(location.search))   //?es
  fetch('https://raw.githubusercontent.com/'+(location.search==location.search.toLowerCase()?'rejetto/hfs2/master/default.tpl':'dj0001/hfs-template/gh-pages/mobil-light_V5.5.tpl')).then(res => res.text()).then(txt => {getlng(txt); if(location.search!='?en')
  fetch('https://raw.githubusercontent.com/dj0001/hfs-template/master/addons/languages/default/'+location.search.slice(1).toLowerCase()+'.txt').then(res => res.text()).then(txt => make(txt))
