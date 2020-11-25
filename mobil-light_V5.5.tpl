@@ -3,7 +3,7 @@
 <head>
 <meta charset=UTF-8 />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="5.5.11"/>
+<meta name="version" content="5.5.12"/>
 <meta name="Description" content="mobillight">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
@@ -24,7 +24,7 @@ header>button {background:#cde; border-radius:2px; border:0; margin:2px} header>
 a[href*="."]::before {content:"📄  "}
 nav a[href*="."]::before {content:""}
 a[href$=".mp3"]::before, a[href$=".ogg"]::before {content:"🎧  "}
-a[href$=".jpg"]::before {content:"🌄"}
+a[href$=".jpg"], a[href$=".avif"]::before {content:"🌄"}
 img+div a[href$=".jpg"]::before {content:""}
 a[href$=".mp4"]::before {content:"🎞  "} /*🎬*/
 a[href*="://"]::before, a[href$=".htm"]::before, a[href$=".URL"]::before {content:"🌎  "} /*🔗*/
@@ -79,7 +79,7 @@ li, aside {scroll-snap-align: start}
 #Login::before {content:"👤"}
 #Archive::before {content:"⇩"}
 </style>
-<script src='/~sha256.js' defer></script>
+<!--<script nomodule src='/~sha256.js' defer></script> -->
 </head>
 
 <body>
@@ -188,8 +188,8 @@ fetch(folder,{method:'POST',body:fd}).then(response => {get(folder); upload.clas
 }
 
 function del(ar) {
-var ref = document.querySelectorAll('.checked'), qstr=''
-ref.forEach(item => qstr+='&selection='+item.firstChild.getAttribute('href'))
+var ref = document.querySelectorAll('.checked'), qstr='';
+Array.from(ref).forEach(item => qstr+='&selection='+item.firstChild.getAttribute('href'))
 if(!qstr) {document.querySelector('body').classList.toggle("check"); return}
 if(!confirm((ar||"Delete ")+ref.length+" file(s) ?")) return
 var ct={"Content-type":"application/x-www-form-urlencoded"}; 
@@ -204,10 +204,10 @@ if ('mediaSession' in navigator) navigator.mediaSession.setActionHandler('nexttr
 
 if(window.matchMedia('(prefers-color-scheme:dark)').matches) document.body.classList.add('dark')  //light remove
 if('%user%' && '%user%' != '%'+'user%') document.querySelector('#Login>span').textContent='%user%'  //
-document.querySelector('#dia2 form').onsubmit = function(){login(); this.parentNode.close(); return false}
+//document.querySelector('#dia2 form').onsubmit = function(){login(); this.parentNode.close(); return false}  //chrome<63
 var sha256 = function(s) {return SHA256.hash(s)}
 
-function login() {
+function login(s) {if(s) SHA256=s
   var sid = "{.cookie|HFS_SID_.}"  //getCookie('HFS_SID');
   if (!sid) return true;  //let the form act normally
   var usr = user.value;
@@ -227,9 +227,11 @@ function logout() {fetch("/?mode=logout").then(res => location.reload()); return
 if('%user%') {user.placeholder="%user%"; user.classList.add("outbox")}
 document.querySelector("#dia2 input[type=checkbox]").onchange=function(){if(!this.checked) localStorage.removeItem('login')}
 if(localStorage.login) document.querySelector("#dia2 input[type=checkbox]").checked=true
-if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); user.value=tmp[0]; pw.value=tmp[1]; var myform=document.querySelector("#dia2 form"); if (myform.requestSubmit) myform.requestSubmit(); else myForm.submit()}
+
 pw.oncontextmenu=function(){this.type = this.type=='text'?'password':'text'}  //
 </script>
+<script type='module'>document.querySelector('#dia2 form').onsubmit = function(){import('/~sha256m.js').then(obj => {login(obj.SHA256)}); this.parentNode.close(); return false}
+if(!'%user%' && localStorage.login) {var tmp=JSON.parse(localStorage.login); user.value=tmp[0]; pw.value=tmp[1]; var myform=document.querySelector("#dia2 form"); if (myform.requestSubmit) myform.requestSubmit(); else myForm.submit()}</script>
 </body>
 </html>
 
@@ -263,4 +265,8 @@ pw.oncontextmenu=function(){this.type = this.type=='text'?'password':'text'}  //
 
 [api level]
 2
+
+[sha256m.js|public]
+var i; export var 
+{.$sha256.js.}
 
