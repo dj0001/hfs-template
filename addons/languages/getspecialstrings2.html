@@ -24,7 +24,7 @@
 	<h2>== Select your template file ==</h2>
 	<input type="file" id="template" onchange="for(const file of this.files) {readfile(file)}" accept='.tpl,.txt' multiple /><br />
 	<h2>== Results <meter title='translated/total'></meter></h2>
-	<textarea spellcheck="false" class="content" id="languagecontent" placeholder='try querstring ?es' required minlength=3></textarea><br />
+	<textarea spellcheck="false" class="content" id="languagecontent" placeholder='try querstring ?es' required minlength=3 wrap="off"></textarea><br />
 	<button onclick="download();">Download as file</button>
 	<a hidden id="dummylink"></a>
 	<script>
