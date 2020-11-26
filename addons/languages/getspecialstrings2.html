@@ -24,7 +24,7 @@
 	<h2>== Select your template file ==</h2>
 	<input type="file" id="template" onchange="for(const file of this.files) {readfile(file)}" accept='.tpl,.txt' multiple /><br />
 	<h2>== Results <meter title='translated/total'></meter></h2>
-	<textarea spellcheck="false" class="content" id="languagecontent" placeholder='try querstring ?es' required minlength=3 wrap="off"></textarea><br />
+	<textarea spellcheck="false" class="content" id="languagecontent" required minlength=3 wrap="off"></textarea><br />
 	<button onclick="download();">Download as file</button>
 	<a hidden id="dummylink"></a>
 	<script>
@@ -68,6 +68,7 @@ if(/^\?[a-z]{2}$/i.test(location.search))   //?es
  fetch('https://raw.githubusercontent.com/'+(location.search==location.search.toLowerCase()?'rejetto/hfs2/master/default.tpl':'dj0001/hfs-template/gh-pages/mobil-light_V5.5.tpl')).then(res => res.text()).then(txt => {getlng(txt); if(location.search!='?en')
  fetch('https://raw.githubusercontent.com/dj0001/hfs-template/master/addons/languages/default/'+location.search.slice(1).toLowerCase()+'.txt').then(res => res.text()).then(txt => make(txt))
 })
+languagecontent.placeholder='try querstring ?'+(['es','fr','zh'].find(el => el==navigator.language.split('-')[0])||'es')  //
 	</script>
 </body>
 </html>
