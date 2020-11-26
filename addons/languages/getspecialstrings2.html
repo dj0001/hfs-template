@@ -57,7 +57,7 @@ var uniq, txt0=''
 function make(tx0) { txt0=tx0||txt0
  var txt =  '[^special:strings]\r\n'  //[+special:strings]
  if(!uniq) {languagecontent.value = txt0; return}  //
- uniq.forEach(it => { it=it.slice(3,-2);var patt=new RegExp('^(?:lv_)?'+it+'=(.+)','mi'); txt += it+'='+(txt0.match(patt)||[,''])[1]+'\r\n' })
+ uniq.forEach(it => { it=it.slice(3,-2);var patt=new RegExp('^(?:lv_)?'+it+'[=\t](.+)','mi'); txt += it+'='+(txt0.match(patt)||[,''])[1]+'\r\n' })
  txt=txt.replace('{.if|{.length|{.?search=','No results=\nNo files=').replace('%reason%=','File name or extension forbidden..=').replace(/option.+\r?\n/g,'')  //HFS2.4
  if(location.search) txt+='Folder=\n'  //HFS2.3
  languagecontent.value = txt; meter(txt)
