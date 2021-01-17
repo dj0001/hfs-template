@@ -3,7 +3,7 @@
 <head>
 <meta charset=UTF-8 />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="version" content="5.5.12"/>
+<meta name="version" content="5.5.13"/>
 <meta name="Description" content="mobillight">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
@@ -140,7 +140,7 @@ function render(a){ const th=a.some(o => o.url=='thumb/'), la=(navigator.connect
 var myTemplate=a.map(function(item) {
  return "<li>"+
  (thumbsize && (th||la||folder.endsWith("/thumb/")) && tn.test(item.url)? "<img src='"+folder+(th&&!document.body.classList.contains("gri")?"thumb/"+item.url:item.url+(jpgimgth&&item.url.match(jpgimgth)&&!document.body.classList.contains("gri")&&!folder.endsWith("/thumb/")?'?mode=thumb':''))+"' alt='thumb' loading='lazy' height='"+thumbsize+"' width='"+thumbsize+"'>":"")+
- "<div><a "+(item.access?'':'class=notaccess ')+"href=\'"+(item.url.slice(-1)=='/'?item.url+"\'":(item.url.match('://')?'':folder)+item.url+"\' target='"+target+"'")+">"+decodeURI(item.url).replace(/\/$/,'')+
+ "<div><a "+(item.access?'':'class=notaccess ')+"href=\'"+(item.url.includes('//')?'':folder)+item.url+"\' "+(item.url.endsWith('/')?'':"target="+target)+">"+decodeURI(item.url).replace(/\/$/,'')+
  "</a><span>"+item.size+"</span><span> "+item.modified+"</span></div></li>"
 
  })
@@ -161,7 +161,7 @@ document.querySelector('form').onsubmit = function(){get(folder,1*this[0].nextEl
 var dia=document.querySelector('dialog'); if(!dia.showModal) poly(dia); if(!dia2.showModal) poly(dia2)
 function poly(node) {node.showModal=function(){this.hidden=false};  node.close=function(){this.hidden=true};  node.setAttribute('open',''); node.hidden=true}  //mypoly
 
-document.querySelector('main').onclick=function(e){var f=e.target; if(!reload&& f.tagName=='A' && !f.target &&!e.altKey) {get(folder+f.getAttribute('href'));return false} else
+document.querySelector('main').onclick=function(e){var f=e.target; if(!reload&& f.tagName=='A' && !f.target &&!e.altKey) {get(e.target.pathname);return false} else
 if(f.tagName=='SPAN'&&!f.nextSibling || f.tagName=='A'&&e.altKey) {f.parentNode.classList.toggle("checked");document.querySelector('small>a').innerHTML=document.querySelectorAll('.checked').length}
 else if(f.tagName=='IMG') {document.body.classList.toggle("gri");f.scrollIntoView()}
 else if(f.tagName=='A' && ['.mp3','.ogg','.m3u'].indexOf(f.getAttribute('href').slice(-4))+1) {e.preventDefault();
