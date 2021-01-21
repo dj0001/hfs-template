@@ -10,7 +10,7 @@ b.forEach(item => {
  vid.height='64'; vid.width='64'  //;vid.loading='lazy'
  vid.onloadedmetadata=function(){item.title =new Date(Math.ceil((this.duration-15)/60)*60000).toJSON().slice(12,-8)}  //14,-5  //this.title
  let ref=item.parentNode
- ref=ref.parentNode  //uncommend for takeback
+ ref=ref.parentNode  //uncommend for takeback and V5.6
  ref.prepend(vid)
 })
 }; if(!document.querySelector('main')) videoth()  //hfs2.4
