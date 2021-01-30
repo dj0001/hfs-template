@@ -8,3 +8,4 @@ Logout=Abmelden
 Change password=Wechsle Passwort
 Stay loggedin=Bleibe eingeloggt
 New folder=Neues Verzeichnis
+large files=große Dateien
