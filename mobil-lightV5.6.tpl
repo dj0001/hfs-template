@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head><meta charset=UTF-8 /><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="Description" content="5.6.4">
+<meta name="Description" content="5.6.5">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" sizes="192x192" href="/icon.png">
 <title>HFS %version%</title>
@@ -75,8 +75,8 @@ if(sticknav) document.body.classList.add('sticknav'); if(dark) document.body.cla
 get(folder)
 
 function get(a,para){
-folder=a
-fetch(a+'~files.lst?'+(para||location.search.slice(1)||'sort=n'))  //Add hfs.filelist.tpl from zip to folder, that contains hfs.exe
+folder=a.replace(/[^\/]*$/,'')  //=a
+fetch(a + (a.endsWith('.m3u')? '' : '~files.lst?'+(para||location.search.slice(1)||'sort=n')) )  //Add hfs.filelist.tpl from zip to folder, that contains hfs.exe
  .then(response => response.text())
  .then(text => render(text))
 }
