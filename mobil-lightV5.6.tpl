@@ -16,6 +16,7 @@ nav a[href$="/"]::before {content:""}
 main div, nav {padding: .3em 0; transition: background .5s}
 .checked {background:#f5f5f5}
 .checked span:last-child::after {content:" ☑"}/**/
+main span:last-child {cursor:default} /*main span:last-child::after {content:" ☐"}*/
 img {height:72px}  /*max 288*/
 /*button:disabled {display:none}*/
 /*main a[href$="thumb/"], main a[href$="thumb/"]~* {display:none}*/
@@ -75,8 +76,8 @@ if(sticknav) document.body.classList.add('sticknav'); if(dark) document.body.cla
 get(folder)
 
 function get(a,para){
-folder=a.replace(/[^\/]*$/,'')  //=a
-fetch(a + (a.endsWith('.m3u')? '' : '~files.lst?'+(para||location.search.slice(1)||'sort=n')) )  //Add hfs.filelist.tpl from zip to folder, that contains hfs.exe
+folder=a
+fetch(a+'~files.lst?'+(para||location.search.slice(1)||'sort=n'))  //Add hfs.filelist.tpl from zip to folder, that contains hfs.exe
  .then(response => response.text())
  .then(text => render(text))
 }
