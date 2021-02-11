@@ -86,7 +86,7 @@ function render(a){
  a=a.split(/\r?\n/)
  let myTpl=[]; a.forEach((item,index,arr) => {
   if(item=='index.htm') location=folder  //filemask
-  if(!item.startsWith('#')) {let items=arr[index-1];
+  if(item && !item.startsWith('#')) {let items=arr[index-1];
   let Item={modified:'', size:'', access:1}
   Item.url=(item.includes('//')?'':folder)+item
   Item.name=decodeURI(item)  //.replace(/\/$/,'')  //(item.replace(location.origin,'').replace(new RegExp("\\^"+folder),''))
