@@ -43,13 +43,13 @@ main span:last-child {justify-self: end; margin-left:10px}
 @media(min-width:1024px) { main a+span {grid-column:3} main a:first-child~span:last-child {grid-column:4} main div {grid-template-columns:auto auto auto max-content} main span {justify-self:end} }
 
 a[href*="."]::before {content:"📄 "}
+a[href*="://"]::before, a[href$=".htm"]::before, a[href$=".URL"]::before {content:"🌎  "}
 a[href$="/"]::before {content:"📁\FE0E  "; color:orange}
 a[href$=".png"]::before {content:"🌄 "}
 a[href]:nth-child(2)::before {content:""}
 a[href$=".mp3"]::before, a[href$=".ogg"]::before {content:"🎧  "}
 a[href$=".mp4"]::before {content:"🎞 "} /*🎬*/
-a[href*="://"]::before, a[href$=".htm"]::before, a[href$=".URL"]::before {content:"🌎  "}
-a[href*=".txt"]::before {content:"📝  "}
+a[href$=".txt"]::before {content:"📝  "}
 
 #upload::before {content:"⇧"}
 #Search::before {content:"⌕"}
