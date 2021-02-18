@@ -78,7 +78,7 @@ get(folder)
 function get(a,para){
 folder=a
 fetch(a+'~files.lst?'+(para||location.search.slice(1)||'sort=n'))  //Add hfs.filelist.tpl from zip to folder, that contains hfs.exe
- .then(response => response.text())
+ .then(response => {if(response.status==403) location='/~login'; return response.text()})
  .then(text => render(text))
 }
 
