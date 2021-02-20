@@ -60,12 +60,12 @@ a[href$=".txt"]::before {content:"📝  "}
 </head>
 
 <body>
-<header><button id='Search' onclick="dia.showModal()">Search</button><button id='Login'>Login</button><button id='upload' onclick="fileElem.click()">Upload</button><button id='Delete' onclick="del()">Delete</button><button id='Archive' onclick="del(1)">Archive</button></header>
+<header><button id='Search' onclick="dia.showModal()">{.!Search.}</button><button id='Login'>{.!Login.}</button><button id='upload' onclick="fileElem.click()">{.!Upload.}</button><button id='Delete' onclick="del()">{.!Delete.}</button><button id='Archive' onclick="del(1)">{.!Archive.}</button></header>
 <input type="file" id="fileElem" multiple hidden onchange="sendFiles(this.files)">
 <dialog id='dia'><form><input list='cat' type='search' placeholder='newfolder.../' name='qf'><input type='checkbox' checked>📁&#xfe0e;<button type="submit">⌕</button></form></dialog>
 <datalist id='cat'><option value="*.jpg;*.png;*.avif">🌄 images</option><option value="*.mp3;*.ogg">🎧  audios</option><option value="*.mp4;*.webm;*.mkv">🎞 videos</option><option value="*&sort=!s&">large files</option></datalist>
 <a id='a' download="selection.tar"></a>
-<aside><nav></nav><span id='nfiles' title='sort ☑&#xa;↖≡ ☼'>files</span></aside>
+<aside><nav></nav><span id='nfiles' title='sort ☑&#xa;↖≡ ☼'>{.!files.}</span></aside>
 
 <main id='files'></main>
 
@@ -153,7 +153,9 @@ if('%user%' && '%user%' != '%'+'user%') Login.textContent='%user%'
 upload.ondrop=(e)=>{e.preventDefault();sendFiles(e.dataTransfer.files)}; upload.ondragover=()=>{return false}  //
 
 if(window.matchMedia('(prefers-color-scheme:dark)').matches) document.body.classList.add('dark')  //
-nfiles.oncontextmenu=function(){document.body.classList.toggle("dark"); return false}
+nfiles.oncontextmenu=function(){document.body.classList.toggle("dark"); return false};
+
+//[...(document.querySelectorAll('header *,aside *,datalist *'))].forEach(v => v.textContent=v.textContent.replace(/{\.!(.+?)\.}/,'$1'))  //HFS3
 
 function file(item){ let tmp=  //[file]
 `<div>${item.url.endsWith('.jpg')?`<img loading="lazy" alt="🌄" src=${item.url}?mode=thumb>`:''}<a ${item.access?'':'class=notaccess'} href="${item.url}">${item.name}</a><span>${item.size}</span><span>${item.modified}</span></div>`  //edit here
