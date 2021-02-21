@@ -71,13 +71,13 @@ a[href$=".txt"]::before {content:"📝  "}
 
 <script>
 var reload=false, sticknav=true, dark=false, lang, dateopt  //edit here
-var folder=location.pathname, ct={"Content-type":"application/x-www-form-urlencoded"} , evt=new Event('render'), sortdesc
+var folder=location.pathname, ct={"Content-type":"application/x-www-form-urlencoded"} , evt=new Event('render'), para
 if(sticknav) document.body.classList.add('sticknav'); if(dark) document.body.classList.add('dark')  //
 get(folder)
 
-function get(a,para){
-folder=a
-fetch(a+'~files.lst?'+(para||location.search.slice(1)||'sort=n'))  //Add hfs.filelist.tpl from zip to folder, that contains hfs.exe
+function get(a,param){
+folder=a; para=param||location.search.slice(1)||'sort=n'
+fetch(a+'~files.lst?'+para)  //Add hfs.filelist.tpl from zip to folder, that contains hfs.exe
  .then(response => {if(response.status==403) location='/~login'; return response.text()})
  .then(text => render(text))
 }
@@ -143,7 +143,7 @@ else fetch(folder+"?mode=archive&recursive",{method:'POST',body:qstr,headers:ct}
 }
 
 nfiles.onclick=function(){if(document.querySelector('.checked')) [...document.querySelectorAll('main div')].forEach(item => item.classList.add('checked'))
-else {get(folder,'&sort='+(sortdesc?'!':'')+'t'); sortdesc=!sortdesc}
+else get(folder,'sort='+(new URLSearchParams(para).get('sort')=='t'? '!t':'t'))
 }
 
 if(!dia.showModal) {dia.showModal=function(){this.hidden=false};  dia.close=function(){this.hidden=true};  dia.setAttribute('open',''); dia.hidden=true}  //mypoly
